@@ -1,0 +1,158 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  background-color: #070709;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 300; /* 保持纖細感，避免粗黑體顯得廉價 */
+  color: #B3B3B8;
+  line-height: 1.8;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+p, span, li, a, label {
+  line-height: 1.8;
+}
+
+/* Luxury Editorial Headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Cormorant Garamond', serif;
+  letter-spacing: 0.1em; /* 拉開字距，營造呼吸感 */
+  font-weight: 500;
+  color: #F5F3EF;
+}
+
+/* Custom Luxury Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070709;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.25);
+  border-radius: 9999px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(212, 175, 55, 0.6);
+}
+
+/* Luxury Gold Gradient Text (Warm off-white to Champagne Gold) */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #FAF6E9 0%, #D4AF37 50%, #B89327 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-subtle {
+  background: linear-gradient(180deg, #F5F3EF 0%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism Card Style */
+.glass-panel {
+  background: rgba(14, 14, 18, 0.68);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(245, 243, 239, 0.06);
+}
+
+.glass-panel-glow {
+  background: rgba(15, 17, 20, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  box-shadow: 0 0 35px -5px rgba(212, 175, 55, 0.15), 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(245, 243, 239, 0.08);
+}
+
+/* Vignette Mask that seamlessly blends edges into #070709 */
+.vignette-overlay {
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 35%,
+    rgba(7, 7, 9, 0.35) 60%,
+    rgba(7, 7, 9, 0.85) 82%,
+    #070709 98%
+  );
+}
+
+/* Subtly animated ambient light spots */
+@keyframes ambientGlow {
+  0%, 100% {
+    opacity: 0.15;
+    transform: scale(1) translate(0, 0);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(1.15) translate(3%, -3%);
+  }
+}
+
+.animate-ambient {
+  animation: ambientGlow 12s ease-in-out infinite;
+}
+
+.font-handwriting {
+  font-family: 'Nothing You Could Do', 'Caveat', cursive;
+}
+
+.font-calligraphy {
+  font-family: 'Caveat', 'Nothing You Could Do', cursive;
+}
+
+/* Apple-style scroll indicator descending light pulse */
+@keyframes scrollPulse {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(340%);
+    opacity: 0;
+  }
+}
+
+/* Hero Idle Breathing & Subtle Floating */
+@keyframes heroFloatBreathe {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3.5px);
+  }
+}
+
+.animate-hero-breathe {
+  animation: heroFloatBreathe 5.2s ease-in-out infinite;
+}
+
+/* Ambient Haute Stardust Micro-Drift & Gentle Twinkle */
+@keyframes stardustDrift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.85);
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate3d(8px, -18px, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(-6px, -36px, 0) scale(0.9);
+    opacity: 0.25;
+  }
+}

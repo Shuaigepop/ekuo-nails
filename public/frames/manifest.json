@@ -1,0 +1,39 @@
+{
+  "name": "Ekuo NAILS Nocturne Emerald Sequence",
+  "brand": "Ekuo NAILS",
+  "frameCount": 300,
+  "prefix": "emma_",
+  "extension": ".jpg",
+  "padLength": 3,
+  "width": 1920,
+  "height": 1080,
+  "chapters": [
+    {
+      "id": "intro",
+      "range": [0, 0.3],
+      "title": "三層工藝・微雕之境",
+      "subtitle": "ATELIER HAUTE ARCHITECTURE"
+    },
+    {
+      "id": "layer-1",
+      "range": [0.35, 0.52],
+      "target": 0.40,
+      "title": "01. 溫和卸甲與建構護甲基底",
+      "frame": 120
+    },
+    {
+      "id": "layer-2",
+      "range": [0.55, 0.78],
+      "target": 0.65,
+      "title": "02. 深邃祖母綠貓眼磁粉光影層",
+      "frame": 195
+    },
+    {
+      "id": "layer-3",
+      "range": [0.82, 0.98],
+      "target": 0.90,
+      "title": "03. 純手工立體香檳金浮雕與高透封層",
+      "frame": 270
+    }
+  ]
+}
