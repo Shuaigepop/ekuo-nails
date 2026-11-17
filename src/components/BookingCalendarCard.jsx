@@ -3,6 +3,7 @@ import {
   ChevronLeft,
   ChevronRight,
   RotateCcw,
+  Home,
   CheckCircle2,
   X,
   Plus,
@@ -227,10 +228,10 @@ export default function BookingCalendarCard({
         <button
           onClick={() => onScrollTo(0)}
           className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-[rgba(197,206,203,0.22)] hover:border-[#E2E6E5] text-[#C5CECB] hover:text-[#E2E6E5] font-serif italic text-xs tracking-wider transition-all duration-300 bg-black/25 hover:bg-black/40"
-          title="返回頂部重新欣賞拆解動畫"
+          title="返回首頁 (Home)"
         >
-          <RotateCcw size={11} className="stroke-[1.5] text-[#C5CECB]" />
-          <span>重新欣賞拆解動畫</span>
+          <Home size={11} className="stroke-[1.5] text-[#C5CECB]" />
+          <span>Home</span>
         </button>
       </div>
 
