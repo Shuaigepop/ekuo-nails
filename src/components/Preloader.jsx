@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { Diamond } from 'lucide-react'
-import { resolveAsset } from '../utils/assetPath'
 
+/**
+ * Ekuo NAILS - Haute Couture Preloader
+ * Ultra-minimalist Liquid Silver & Obsidian-Emerald Loading Experience
+ * - Deep emerald-obsidian background (#060907)
+ * - Refined Cormorant Garamond typographic brandmark
+ * - Single 1px hairline silver progress indicator
+ * - 0.8s smooth opacity dissolve into the Hero stage
+ */
 export default function Preloader({ progress, isLoaded }) {
   const [shouldRender, setShouldRender] = useState(true)
   const [fadeState, setFadeState] = useState(false)
@@ -9,7 +15,7 @@ export default function Preloader({ progress, isLoaded }) {
   useEffect(() => {
     if (isLoaded || progress >= 100) {
       // Graceful delay for luxurious transition
-      const timer1 = setTimeout(() => setFadeState(true), 400)
+      const timer1 = setTimeout(() => setFadeState(true), 350)
       const timer2 = setTimeout(() => setShouldRender(false), 1200)
       return () => {
         clearTimeout(timer1)
@@ -20,75 +26,46 @@ export default function Preloader({ progress, isLoaded }) {
 
   if (!shouldRender) return null
 
-  const strokeDashoffset = 283 - (283 * Math.min(progress, 100)) / 100
+  const displayProgress = Math.min(Math.round(progress), 100)
 
   return (
     <div
-      className={`fixed inset-0 z-50 bg-[#070709] flex flex-col items-center justify-center transition-all duration-700 ease-out select-none ${
-        fadeState ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
+      className={`fixed inset-0 z-50 bg-[#060907] flex flex-col items-center justify-center transition-opacity duration-800 ease-out select-none ${
+        fadeState ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
+      style={{ transitionDuration: '800ms' }}
     >
-      {/* Background Subtle Luxury Radial Light */}
-      <div className="absolute w-[500px] h-[500px] bg-champagne/10 rounded-full blur-[140px] pointer-events-none animate-pulse" />
-
       <div className="relative flex flex-col items-center z-10">
-        {/* Animated Circular Progress Gauge */}
-        <div className="relative w-36 h-36 flex items-center justify-center mb-8">
-          <svg className="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
-            {/* Background Track */}
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="transparent"
-              stroke="rgba(245, 243, 239, 0.05)"
-              strokeWidth="2"
-            />
-            {/* Golden Active Progress Track */}
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="transparent"
-              stroke="#D4AF37"
-              strokeWidth="2"
-              strokeDasharray="283"
-              strokeDashoffset={strokeDashoffset}
-              strokeLinecap="round"
-              className="transition-all duration-150 ease-out"
-              style={{
-                filter: 'drop-shadow(0 0 8px rgba(212, 175, 55, 0.6))',
-              }}
-            />
-          </svg>
+        {/* Subtle Category Eyebrow */}
+        <span className="font-sans text-[9px] tracking-[0.4em] text-[#6E7B77] uppercase font-light mb-4 select-none">
+          ATELIER ARCHIVE
+        </span>
 
-          {/* Center Brand Logo & Percentage */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-2">
-            <img
-              src={resolveAsset('ekuo-logo.png')}
-              alt="Ekuo NAILS"
-              className="h-11 w-auto object-contain mix-blend-screen mb-1"
-            />
-            <span className="font-serif italic text-base font-normal text-[#F5F3EF] tracking-wider">
-              {progress}<span className="text-[10px] text-[#B3B3B8] font-sans ml-0.5 not-italic">%</span>
-            </span>
-          </div>
-        </div>
+        {/* Brandmark Typography (Cormorant Garamond 32px Liquid Silver #EEF2F1) */}
+        <h1
+          className="text-[32px] text-[#EEF2F1] font-normal leading-none tracking-[0.08em] select-none"
+          style={{ fontFamily: "'Cormorant Garamond', serif" }}
+        >
+          Ekuo
+        </h1>
 
-        {/* Exhibition Tag */}
-        <div className="text-center mt-2">
-          <p className="font-sans text-[10px] tracking-[0.35em] text-[#B3B3B8] uppercase font-light">
-            HAUTE 3D NAIL EXHIBITION
-          </p>
-        </div>
+        {/* Brandmark Subtitle (9px, letter-spacing 0.45em, #8A9692) */}
+        <span className="text-[9px] tracking-[0.45em] text-[#8A9692] uppercase font-sans font-light mt-1.5 select-none">
+          — NAILS —
+        </span>
 
-        {/* Elegant Micro-bar */}
-        <div className="w-48 h-[1px] bg-stone-900 mt-6 relative overflow-hidden">
+        {/* Single Hairline Silver Progress Track (160px wide, 1px high) */}
+        <div className="w-[160px] h-[1px] bg-[rgba(226,230,229,0.15)] mt-6 relative overflow-hidden">
           <div
-            className="absolute top-0 bottom-0 left-0 bg-gradient-to-r from-transparent via-champagne to-transparent transition-all duration-200"
-            style={{ width: `${progress}%` }}
+            className="absolute top-0 bottom-0 left-0 bg-[#E2E6E5] transition-all duration-200 ease-out"
+            style={{ width: `${displayProgress}%` }}
           />
         </div>
+
+        {/* Minimal Italic Percentage Readout (13px, #8E9A96) */}
+        <span className="font-serif italic text-[13px] text-[#8E9A96] tracking-wider mt-2.5 font-light">
+          {displayProgress}<span className="text-[10px] text-[#6E7B77] font-sans not-italic ml-0.5">%</span>
+        </span>
       </div>
     </div>
   )
