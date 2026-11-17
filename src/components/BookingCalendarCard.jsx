@@ -331,7 +331,7 @@ export default function BookingCalendarCard({
               return (
                 <div
                   key={dayNum}
-                  className={`min-h-[118px] sm:min-h-[132px] p-2 sm:p-2.5 border-r border-b border-[rgba(197,206,203,0.12)] flex flex-col justify-between relative transition-colors ${
+                  className={`min-h-[124px] sm:min-h-[140px] p-2 sm:p-2.5 border-r border-b border-[rgba(197,206,203,0.12)] flex flex-col justify-between relative transition-colors ${
                     isAdminMode ? 'hover:bg-white/[0.02]' : ''
                   }`}
                 >
@@ -425,7 +425,7 @@ export default function BookingCalendarCard({
                                     : 'text-[#F4F7F6]'
                                 }`}
                                 style={{
-                                  fontSize: 'clamp(13px, 1.0vw, 16px)',
+                                  fontSize: 'clamp(15px, 1.25vw, 19px)',
                                   fontWeight: 500,
                                   textDecorationColor: 'rgba(197, 206, 203, 0.4)',
                                 }}
@@ -454,7 +454,7 @@ export default function BookingCalendarCard({
                               key={slot}
                               className="font-serif italic text-center tracking-tight select-none line-through cursor-not-allowed py-1"
                               style={{
-                                fontSize: 'clamp(14px, 1.1vw, 17px)',
+                                fontSize: 'clamp(16px, 1.35vw, 21px)',
                                 fontWeight: 500,
                                 color: 'rgba(226, 230, 229, 0.28)',
                                 textDecorationColor: 'rgba(197, 206, 203, 0.4)',
@@ -474,7 +474,7 @@ export default function BookingCalendarCard({
                             onClick={() => handlePublicSlotClick(dayNum, slot)}
                             className="font-serif italic text-center tracking-tight py-1 px-1.5 rounded-[4px] text-[#F4F7F6] hover:text-[#FFFFFF] hover:border hover:border-[#C5CECB] hover:bg-[rgba(197,206,203,0.08)] border border-transparent transition-all cursor-pointer"
                             style={{
-                              fontSize: 'clamp(14px, 1.1vw, 17px)',
+                              fontSize: 'clamp(16px, 1.35vw, 21px)',
                               fontWeight: 500,
                             }}
                             title={`預約 ${dayNum}日 · ${slot}`}
@@ -569,7 +569,7 @@ export default function BookingCalendarCard({
                       </span>
                     )}
                   </div>
-                  <span className="block font-serif italic text-lg text-[#F2F5F4]">
+                  <span className="block font-serif italic text-xl sm:text-2xl text-[#F2F5F4] font-medium tracking-tight">
                     {activeSlotModal.year}年 {activeSlotModal.month}月 {activeSlotModal.day}日 ({activeSlotModal.weekday}) · {activeSlotModal.slot}
                   </span>
                 </div>
