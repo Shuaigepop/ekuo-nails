@@ -195,7 +195,7 @@ export default function CanvasStage({
 
   return (
     <div
-      className="fixed inset-0 w-screen h-screen pointer-events-none z-0 overflow-hidden bg-[#070b09]"
+      className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden bg-[#070b09]"
       style={{
         display: isCanvasVisible ? 'block' : 'none',
       }}

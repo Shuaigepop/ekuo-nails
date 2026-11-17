@@ -106,7 +106,7 @@ export default function App() {
   }
 
   return (
-    <div className="relative min-h-[550vh] bg-[#070b09] text-[#B3B3B8] font-sans">
+    <div className="relative min-h-[420vh] sm:min-h-[550vh] w-full overflow-x-hidden bg-[#070b09] text-[#B3B3B8] font-sans">
       {/* Preloader with Gold Circle Progress */}
       <Preloader progress={loadProgress} isLoaded={isLoaded} />
 

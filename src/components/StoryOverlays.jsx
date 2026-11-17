@@ -104,8 +104,8 @@ export default function StoryOverlays({
         className="absolute flex items-center pointer-events-none select-none"
         style={{
           top: '32%',
-          left: '2.5%',
-          width: 'clamp(280px, 32.3vw, 620px)',
+          left: '2%',
+          width: 'clamp(180px, 32.3vw, 620px)',
           transform: `translateY(-50%) translateX(${(1 - layer3Opacity) * -20}px)`,
           opacity: layer3Opacity,
           visibility: layer3Opacity > 0.02 ? 'visible' : 'hidden',
@@ -113,17 +113,17 @@ export default function StoryOverlays({
         }}
       >
         {/* Text block: right-aligned in outer margin, strictly outside nails */}
-        <div className="flex-shrink-0 text-right pr-4 select-none max-w-[210px]">
+        <div className="flex-shrink-0 text-right pr-2.5 sm:pr-4 select-none max-w-[145px] sm:max-w-[210px]">
           <span
-            className="block font-serif italic text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
+            className="block font-serif italic text-[12px] sm:text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
           >
             03
           </span>
           <span
-            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6] whitespace-nowrap"
+            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]"
             style={{
               fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif",
-              fontSize: 'clamp(15px, 1.2vw, 18px)',
+              fontSize: 'clamp(13px, 1.2vw, 18px)',
               fontWeight: 500,
               letterSpacing: '0.06em',
               textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)',
@@ -132,15 +132,15 @@ export default function StoryOverlays({
             水光鏡面封層
           </span>
           <span
-            className="block font-sans text-[12px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none whitespace-nowrap"
+            className="block font-sans text-[11px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none"
           >
-            清透抗刮，持久鎖住光澤
+            清透抗刮，持久鎖光
           </span>
         </div>
 
         {/* 1px Liquid Silver horizontal leader line extending into the center of the 1st nail */}
         <div
-          className="flex-1 h-[1px] min-w-[32px]"
+          className="flex-1 h-[1px] min-w-[16px] sm:min-w-[32px]"
           style={{
             background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.15), rgba(226, 230, 229, 0.55))',
           }}
@@ -166,7 +166,7 @@ export default function StoryOverlays({
         style={{
           top: '51.5%',
           right: '2%',
-          width: 'clamp(300px, 32.2vw, 640px)',
+          width: 'clamp(180px, 32.2vw, 640px)',
           transform: `translateY(-50%) translateX(${(1 - layer2Opacity) * 20}px)`,
           opacity: layer2Opacity,
           visibility: layer2Opacity > 0.02 ? 'visible' : 'hidden',
@@ -186,35 +186,35 @@ export default function StoryOverlays({
 
         {/* 1px Liquid Silver horizontal leader line extending leftward from text to nail center */}
         <div
-          className="flex-1 h-[1px] min-w-[36px]"
+          className="flex-1 h-[1px] min-w-[16px] sm:min-w-[36px]"
           style={{
             background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.55), rgba(226, 230, 229, 0.15))',
           }}
         />
 
         {/* Text block: left-aligned, cleanly in right dark margin, zero overlap on the 5th nail */}
-        <div className="flex-shrink-0 text-left pl-4 select-none max-w-[210px]">
+        <div className="flex-shrink-0 text-left pl-2.5 sm:pl-4 select-none max-w-[145px] sm:max-w-[210px]">
           <span
-            className="block font-serif italic text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
+            className="block font-serif italic text-[12px] sm:text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
           >
             02
           </span>
           <span
-            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6] whitespace-nowrap"
+            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]"
             style={{
               fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif",
-              fontSize: 'clamp(15px, 1.2vw, 18px)',
+              fontSize: 'clamp(13px, 1.2vw, 18px)',
               fontWeight: 500,
               letterSpacing: '0.06em',
               textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)',
             }}
           >
-            手繪浮雕與貓眼流光
+            手繪浮雕與貓眼
           </span>
           <span
-            className="block font-sans text-[12px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none whitespace-nowrap"
+            className="block font-sans text-[11px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none"
           >
-            一筆一畫堆疊立體金屬紋理
+            堆疊立體金屬流光
           </span>
         </div>
       </div>
@@ -226,8 +226,8 @@ export default function StoryOverlays({
         className="absolute flex items-center pointer-events-none select-none"
         style={{
           top: '71%',
-          left: '2.5%',
-          width: 'clamp(280px, 31.9vw, 610px)',
+          left: '2%',
+          width: 'clamp(180px, 31.9vw, 610px)',
           transform: `translateY(-50%) translateX(${(1 - layer1Opacity) * -20}px)`,
           opacity: layer1Opacity,
           visibility: layer1Opacity > 0.02 ? 'visible' : 'hidden',
@@ -235,17 +235,17 @@ export default function StoryOverlays({
         }}
       >
         {/* Text block: right-aligned in outer margin, strictly outside nails */}
-        <div className="flex-shrink-0 text-right pr-4 select-none max-w-[210px]">
+        <div className="flex-shrink-0 text-right pr-2.5 sm:pr-4 select-none max-w-[145px] sm:max-w-[210px]">
           <span
-            className="block font-serif italic text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
+            className="block font-serif italic text-[12px] sm:text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
           >
             01
           </span>
           <span
-            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6] whitespace-nowrap"
+            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]"
             style={{
               fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif",
-              fontSize: 'clamp(15px, 1.2vw, 18px)',
+              fontSize: 'clamp(13px, 1.2vw, 18px)',
               fontWeight: 500,
               letterSpacing: '0.06em',
               textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)',
@@ -254,15 +254,15 @@ export default function StoryOverlays({
             溫和護甲打底
           </span>
           <span
-            className="block font-sans text-[12px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none whitespace-nowrap"
+            className="block font-sans text-[11px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none"
           >
-            貼合原生甲面，不傷真甲
+            貼合甲面，不傷真甲
           </span>
         </div>
 
         {/* 1px Liquid Silver horizontal leader line extending into the center of the 1st nude nail */}
         <div
-          className="flex-1 h-[1px] min-w-[32px]"
+          className="flex-1 h-[1px] min-w-[16px] sm:min-w-[32px]"
           style={{
             background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.15), rgba(226, 230, 229, 0.55))',
           }}
@@ -285,7 +285,8 @@ export default function StoryOverlays({
       {/* Subtly floats upward and recedes as the calendar rises from below */}
       {/* ================================================================= */}
       <div
-        className="absolute inset-0 w-screen flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[85px] sm:pt-[95px] overflow-y-auto bg-[#070b09]"
+        id="portfolio-scroll-container"
+        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[85px] sm:pt-[95px] overflow-y-auto bg-[#070b09]"
         style={{
           transform: `translate3d(0, ${portfolioTranslateY}px, 0) scale(${portfolioScale})`,
           opacity: portfolioOpacity,
@@ -308,7 +309,8 @@ export default function StoryOverlays({
       {/* Slowly rises up from bottom (慢慢往上) with luxury architectural sheet*/}
       {/* ================================================================= */}
       <div
-        className="absolute inset-0 w-screen flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[75px] sm:pt-[85px] overflow-y-auto bg-[#070b09] border-t border-[#E2E6E5]/20 shadow-[0_-35px_100px_rgba(0,0,0,0.95)]"
+        id="calendar-scroll-container"
+        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[75px] sm:pt-[85px] overflow-y-auto bg-[#070b09] border-t border-[#E2E6E5]/20 shadow-[0_-35px_100px_rgba(0,0,0,0.95)]"
         style={{
           transform: `translate3d(0, ${calendarTranslateY}vh, 0)`,
           opacity: calendarOpacity,
