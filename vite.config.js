@@ -7,6 +7,14 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 3000,
-    host: true
-  }
+    host: true,
+    proxy: {
+      '/line-api': {
+        target: 'https://api.line.me',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/line-api/, ''),
+        secure: true,
+      },
+    },
+  },
 })

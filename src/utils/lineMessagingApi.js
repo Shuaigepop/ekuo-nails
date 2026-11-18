@@ -241,7 +241,7 @@ export async function sendLineReservationNotification({ booking, config }) {
   const flexMessage = buildReservationFlexMessage({ booking, config })
 
   try {
-    const res = await fetch('https://api.line.me/v2/bot/message/push', {
+    const res = await fetch('/line-api/v2/bot/message/push', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
