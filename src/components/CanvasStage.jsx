@@ -34,25 +34,24 @@ export default function CanvasStage({
     context.imageSmoothingEnabled = true
     context.imageSmoothingQuality = 'high'
 
-    // ── True 100vw × 100vh Base Scaling ──
+    // ── True Responsive 100vw × 100vh Proportional Scaling Engine ──
     const imgRatio = img.naturalWidth / img.naturalHeight
     const screenRatio = canvasWidth / canvasHeight
 
-    let baseWidth, baseHeight
-    if (screenRatio > imgRatio) {
-      // Screen is wider than 16:9: match width, height expands proportionally
-      baseWidth = canvasWidth
-      baseHeight = canvasWidth / imgRatio
-    } else {
-      // Screen is taller than 16:9: match height, width expands proportionally
-      baseHeight = canvasHeight
-      baseWidth = canvasHeight * imgRatio
-    }
+    // Desktop base dimensions: match width if wider than 16:9, else match height
+    const desktopBaseWidth = screenRatio > imgRatio ? canvasWidth : canvasHeight * imgRatio
+    const desktopRenderWidth = desktopBaseWidth * 0.76
 
-    // Scale down by roughly 22%–25% (scale * 0.76) for refined editorial proportions
-    const scaleFactor = 0.76
-    const renderWidth = baseWidth * scaleFactor
-    const renderHeight = baseHeight * scaleFactor
+    // The 5 nails in the 3D sequence span ~50.5% of the total frame width (from ~24.5% to ~75.0%)
+    // On mobile vertical screens (portrait), we guarantee all 5 nails fit completely within the screen
+    // with ~7.5% luxury breathing room on both sides (nail span occupies at most 85% of screen width).
+    const nailSpanInFrame = 0.505
+    const maxNailWidthRatio = 0.85
+    const maxAllowedMobileRenderWidth = (canvasWidth * maxNailWidthRatio) / nailSpanInFrame
+
+    // Scale down on narrow/mobile viewports so zero nail tips are clipped
+    const renderWidth = Math.min(desktopRenderWidth, maxAllowedMobileRenderWidth)
+    const renderHeight = renderWidth / imgRatio
 
     // Center nails cleanly at top: 52%
     // In Hero frame, vertical center is at 0.444 of frame height
