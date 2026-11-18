@@ -83,18 +83,31 @@ export default function PortfolioSection({
   return (
     <div className="relative w-full max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-6 select-none bg-transparent">
       {/* ── Section Header: Clean, confident Liquid Silver headline (with clean 64px bottom margin) ── */}
-      <div className="flex flex-col items-center text-center mb-16">
+      <div className="flex flex-col items-center text-center mb-12 sm:mb-16">
         <h2
           className="text-3xl sm:text-4xl md:text-5xl text-[#F4F7F6] font-normal tracking-[0.08em] leading-tight select-none"
           style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif TC', serif" }}
         >
           Ekuo 指尖私藏
         </h2>
+
+        {/* Admin Add Artwork Quick Action */}
+        {isAdminMode && (
+          <div className="mt-4 flex items-center justify-center">
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-[rgba(226,230,229,0.35)] bg-[rgba(12,20,17,0.85)] hover:bg-[#E2E6E5] hover:text-[#060907] text-[#E2E6E5] text-xs font-serif tracking-[0.16em] transition-all duration-300 shadow-lg backdrop-blur-md cursor-pointer active:scale-95"
+            >
+              <Plus size={14} className="stroke-[2.2]" />
+              <span>新增私藏高訂款式</span>
+            </button>
+          </div>
+        )}
       </div>
 
       {/* ── Editorial Gallery: Balanced 2-Column Spread (Zero Boxes, Zero Glows, 100% Symmetrical) ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 sm:gap-14 lg:gap-16 items-start">
-        {items.slice(0, 2).map((item) => (
+        {items.map((item) => (
           <div
             key={item.id}
             className="group flex flex-col justify-between select-none bg-transparent"
@@ -191,6 +204,27 @@ export default function PortfolioSection({
             </div>
           </div>
         ))}
+
+        {/* Admin Add Card in Grid */}
+        {isAdminMode && (
+          <div
+            onClick={() => setIsAddModalOpen(true)}
+            className="group flex flex-col items-center justify-center min-h-[260px] sm:min-h-[320px] rounded-2xl border-2 border-dashed border-[rgba(226,230,229,0.2)] hover:border-[#E2E6E5] bg-[rgba(12,20,17,0.35)] hover:bg-[rgba(12,20,17,0.7)] cursor-pointer transition-all duration-300 p-6 text-center"
+          >
+            <div className="w-12 h-12 rounded-full border border-[rgba(226,230,229,0.35)] flex items-center justify-center text-[#E2E6E5] group-hover:scale-110 group-hover:bg-[#E2E6E5] group-hover:text-[#060907] transition-all duration-300 mb-3 shadow-lg">
+              <Plus size={20} />
+            </div>
+            <span
+              className="text-base sm:text-lg text-[#F4F7F6] font-normal tracking-[0.06em] mb-1"
+              style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif TC', serif" }}
+            >
+              新增私藏高訂款式
+            </span>
+            <span className="text-[11px] text-[#7FA398] font-serif italic tracking-wider">
+              + Add New Haute Design
+            </span>
+          </div>
+        )}
       </div>
 
       {/* ── Fullscreen HD Lightbox Modal ── */}
@@ -283,7 +317,7 @@ export default function PortfolioSection({
               Admin Private Archive
             </span>
             <h3 className="font-serif text-xl text-[#F4F7F6] font-normal mb-4">
-              新增作品至 EMMA 指尖私藏
+              新增作品至 Ekuo 指尖私藏
             </h3>
 
             <form onSubmit={handleAddNewItem} className="space-y-3 font-serif text-xs">
@@ -295,7 +329,7 @@ export default function PortfolioSection({
                   value={newTitle}
                   onChange={(e) => setNewTitle(e.target.value)}
                   placeholder="請輸入中文款式名"
-                  className="w-full px-3 py-2 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans"
+                  className="w-full px-3 py-2 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans text-base sm:text-xs"
                 />
               </div>
 
@@ -306,7 +340,7 @@ export default function PortfolioSection({
                   value={newEngTitle}
                   onChange={(e) => setNewEngTitle(e.target.value)}
                   placeholder="請輸入英文名"
-                  className="w-full px-3 py-2 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans"
+                  className="w-full px-3 py-2 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans text-base sm:text-xs"
                 />
               </div>
 
@@ -317,7 +351,7 @@ export default function PortfolioSection({
                   value={newDesc}
                   onChange={(e) => setNewDesc(e.target.value)}
                   placeholder="請輸入工藝特點描述..."
-                  className="w-full px-3 py-2 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans resize-none"
+                  className="w-full px-3 py-2 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans text-base sm:text-xs resize-none"
                 />
               </div>
 
@@ -328,7 +362,7 @@ export default function PortfolioSection({
                   value={newTags}
                   onChange={(e) => setNewTags(e.target.value)}
                   placeholder="雙磁推光, 純手工金雕, 植物無酸基底"
-                  className="w-full px-3 py-2 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans"
+                  className="w-full px-3 py-2 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans text-base sm:text-xs"
                 />
               </div>
 
@@ -338,14 +372,14 @@ export default function PortfolioSection({
                   type="file"
                   accept="image/*"
                   onChange={handleFileUpload}
-                  className="w-full text-[11px] text-[#9A9E9D] file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-[11px] file:bg-[#1c2e27] file:text-[#E2E6E5] cursor-pointer mb-2"
+                  className="w-full text-xs text-[#9A9E9D] file:mr-2 file:py-1 file:px-2.5 file:rounded file:border-0 file:text-xs file:bg-[#1c2e27] file:text-[#E2E6E5] cursor-pointer mb-2"
                 />
                 <input
                   type="text"
                   value={newImage}
                   onChange={(e) => setNewImage(e.target.value)}
                   placeholder="或直接輸入圖片 URL"
-                  className="w-full px-3 py-1.5 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans text-[11px]"
+                  className="w-full px-3 py-1.5 rounded bg-black/50 border border-[rgba(197,206,203,0.25)] focus:border-[#E2E6E5] text-[#F4F7F6] outline-none font-sans text-base sm:text-[11px]"
                 />
               </div>
 
