@@ -38,7 +38,7 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Cormorant Garamond"', 'serif'],
+        serif: ['"Cormorant Garamond"', '"Noto Serif TC"', 'serif'],
         sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
       },
       letterSpacing: {

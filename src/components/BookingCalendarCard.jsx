@@ -218,7 +218,10 @@ export default function BookingCalendarCard({
   }
 
   return (
-    <div className="relative w-full max-w-4xl bg-transparent transition-all select-none">
+    <div
+      className="relative w-full max-w-4xl px-5 sm:px-6 bg-transparent transition-all select-none"
+      style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif TC', serif" }}
+    >
       {/* ── Top Bar: Clean Right-Aligned Platinum Back Button & Selected Design Badge ── */}
       <div className="w-full flex items-center justify-between pb-3 sm:pb-4 gap-3">
         {selectedDesign ? (
@@ -255,7 +258,7 @@ export default function BookingCalendarCard({
       </div>
 
       {/* ── Liquid Silver & Moonlit Platinum Month Header ── */}
-      <div className="relative flex items-center justify-center my-4 sm:my-6 h-24 select-none">
+      <div className="relative flex items-center justify-center my-4 sm:my-6 h-20 select-none">
         {/* Previous Month Arrow in Platinum-Gray */}
         <button
           onClick={handlePrevMonth}
@@ -266,24 +269,8 @@ export default function BookingCalendarCard({
           <ChevronLeft size={20} className="stroke-[1.5]" />
         </button>
 
-        {/* Center Artwork: Faint Non-Glowing Platinum-Gray "11" with Moonlit Silver Script "November" */}
+        {/* Center Artwork: Pure Moonlit Silver Script "November" without overlapping background numeral */}
         <div className="relative flex flex-col items-center justify-center">
-          {/* Extremely faint, non-glowing translucent platinum-gray numeral */}
-          <span
-            className="absolute font-serif font-light pointer-events-none select-none"
-            style={{
-              fontSize: '5.5rem',
-              lineHeight: 1,
-              color: 'rgba(226, 230, 229, 0.08)',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              letterSpacing: '-0.03em',
-            }}
-          >
-            {monthNumeral}
-          </span>
-
           {/* Small Year Label in Muted Platinum-Gray */}
           <span className="font-serif italic text-xs tracking-[0.35em] text-[#9A9E9D] z-10 select-none mb-[-2px]">
             {currentYear}
@@ -367,12 +354,12 @@ export default function BookingCalendarCard({
 
                 {/* Status indicator on mobile */}
                 {rest ? (
-                  <span className="text-[10px] text-amber-200/80 font-serif mt-0.5 leading-none">休</span>
+                  <span className="text-[10px] text-[#7FA398] font-serif mt-0.5 leading-none">休</span>
                 ) : availCount === 0 ? (
                   <span className="text-[9px] text-[rgba(226,230,229,0.3)] font-serif mt-0.5 leading-none">滿</span>
                 ) : (
-                  <span className="text-[9px] text-[#A3C4BC] font-serif mt-0.5 leading-none flex items-center gap-0.5">
-                    <span className="w-1 h-1 rounded-full bg-[#A3C4BC] inline-block" />
+                  <span className="text-[9px] text-[#7FA398] font-serif mt-0.5 leading-none flex items-center gap-0.5">
+                    <span className="w-1 h-1 rounded-full bg-[#7FA398] inline-block" />
                     <span>{availCount}</span>
                   </span>
                 )}
@@ -381,111 +368,141 @@ export default function BookingCalendarCard({
           })}
         </div>
 
-        {/* Selected Date Session Picker Drawer (Dedicated mobile session shelf) */}
-        <div className="mt-3.5 p-3.5 rounded-[8px] border border-[rgba(197,206,203,0.22)] bg-black/45">
-          <div className="flex items-center justify-between mb-3 border-b border-[rgba(197,206,203,0.12)] pb-2.5">
-            <div className="flex items-center gap-2">
-              <span className="font-serif text-base text-[#F4F7F6] font-medium">
-                {currentMonth + 1}月{selectedDay}日 ({selectedWeekday})
-              </span>
-              {selectedDayConfig.isRest ? (
-                <span className="text-[11px] px-2 py-0.5 rounded bg-amber-950/40 text-amber-300 border border-amber-500/30 font-serif">
-                  門市公休
-                </span>
-              ) : (
-                <span className="text-[11px] px-2 py-0.5 rounded bg-white/[0.06] text-[#A3C4BC] border border-[#A3C4BC]/30 font-serif">
-                  可約專屬席位
-                </span>
-              )}
-            </div>
+        {/* Selected Date Session Picker (Clean hairline divider, zero heavy nested boxes) */}
+        {(() => {
+          const isSelectedRest = selectedDayConfig.isRest
+          const selectedAvailSlots = selectedDayConfig.slots.filter((s) => s.status !== 'booked')
+          const isSelectedFullyBooked = !isSelectedRest && selectedAvailSlots.length === 0
 
-            {isAdminMode && (
-              <button
-                type="button"
-                onClick={() => handleAdminToggleRest(selectedDay)}
-                className="text-xs text-[#E2E6E5] underline decoration-[rgba(197,206,203,0.4)]"
-              >
-                {selectedDayConfig.isRest ? '改為營業' : '設為公休'}
-              </button>
-            )}
-          </div>
+          return (
+            <div className="mt-4 pt-4 border-t border-[rgba(226,230,229,0.15)] bg-transparent">
+              <div className="flex items-center justify-between mb-3 pb-2">
+                <div className="flex items-baseline gap-2.5">
+                  <span
+                    className="text-lg text-[#F4F7F6] font-normal tracking-wide"
+                    style={{ fontFamily: "'Cormorant Garamond', 'Noto Serif TC', serif" }}
+                  >
+                    {currentMonth + 1}月{selectedDay}日 ({selectedWeekday})
+                  </span>
+                  {isSelectedRest ? (
+                    <span className="text-xs text-[#7FA398] font-serif tracking-wider">
+                      工坊公休
+                    </span>
+                  ) : isSelectedFullyBooked ? (
+                    <span className="text-xs text-[rgba(226,230,229,0.45)] font-serif tracking-wider">
+                      本日席位已滿
+                    </span>
+                  ) : (
+                    <span className="text-xs text-[#7FA398] font-serif tracking-wider">
+                      可約專屬席位
+                    </span>
+                  )}
+                </div>
 
-          {/* Slots list on mobile */}
-          {selectedDayConfig.isRest ? (
-            <div className="text-center py-4 text-[#9A9E9D] font-serif text-xs leading-relaxed">
-              本日為工坊公休時段。如需預約特殊時段，歡迎點擊 LINE 官方私訊主理人。
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <div className="grid grid-cols-2 gap-2">
-                {selectedDayConfig.slots.map((sObj) => {
-                  const slot = sObj.time
-                  const isBooked = sObj.status === 'booked'
-
-                  if (isAdminMode) {
-                    return (
-                      <div
-                        key={slot}
-                        className="flex items-center justify-between p-2.5 rounded-[6px] border border-[rgba(197,206,203,0.25)] bg-black/50"
-                      >
-                        <button
-                          type="button"
-                          onClick={() => handleAdminToggleSlot(selectedDay, slot)}
-                          className={`flex-1 text-left font-serif text-sm ${
-                            isBooked ? 'line-through text-stone-500' : 'text-white font-medium'
-                          }`}
-                        >
-                          {slot} {isBooked ? '(滿)' : '(可約)'}
-                        </button>
-                        <button
-                          type="button"
-                          onClick={(e) => handleAdminRemoveSlot(e, selectedDay, slot)}
-                          className="p-1 text-stone-400 hover:text-rose-300"
-                        >
-                          <X size={13} />
-                        </button>
-                      </div>
-                    )
-                  }
-
-                  if (isBooked) {
-                    return (
-                      <div
-                        key={slot}
-                        className="p-2.5 rounded-[6px] border border-[rgba(197,206,203,0.1)] bg-black/20 text-center font-serif text-sm line-through text-[rgba(226,230,229,0.3)] select-none"
-                      >
-                        {slot} (已額滿)
-                      </div>
-                    )
-                  }
-
-                  return (
-                    <button
-                      key={slot}
-                      type="button"
-                      onClick={() => handlePublicSlotClick(selectedDay, slot)}
-                      className="p-2.5 rounded-[6px] border border-[#A3C4BC]/40 bg-[rgba(163,196,188,0.08)] hover:bg-[rgba(163,196,188,0.18)] text-center font-serif text-base text-[#FFFFFF] font-medium transition-all active:scale-[0.98] shadow-sm flex items-center justify-center gap-1.5"
-                    >
-                      <span>{slot}</span>
-                      <span className="text-xs text-[#A3C4BC] font-light">可預約</span>
-                    </button>
-                  )
-                })}
+                {isAdminMode && (
+                  <button
+                    type="button"
+                    onClick={() => handleAdminToggleRest(selectedDay)}
+                    className="text-xs text-[#E2E6E5] underline decoration-[rgba(197,206,203,0.4)]"
+                  >
+                    {selectedDayConfig.isRest ? '改為營業' : '設為公休'}
+                  </button>
+                )}
               </div>
 
-              {/* Mobile Admin add slot button */}
-              {isAdminMode && (
-                <button
-                  type="button"
-                  onClick={() => handleAdminAddSlot(selectedDay)}
-                  className="w-full mt-2 py-2 text-xs text-[#9A9E9D] hover:text-[#E2E6E5] border border-dashed border-[rgba(197,206,203,0.3)] rounded-[6px] flex items-center justify-center gap-1"
-                >
-                  <Plus size={13} /> 新增 {selectedDay} 日時段
-                </button>
+              {/* Slots list on mobile */}
+              {isSelectedRest ? (
+                <div className="text-center py-4 text-[#9A9E9D] font-serif text-xs leading-relaxed">
+                  本日為工坊公休日。如需預約特殊時段，歡迎點擊 LINE 官方私訊主理人。
+                </div>
+              ) : isSelectedFullyBooked && !isAdminMode ? (
+                /* Dynamic Full-Day Empty State: Clean un-boxed strikethrough text with polite salon note */
+                <div className="flex flex-col items-center justify-center py-4 text-center">
+                  <div className="flex flex-wrap items-center justify-center gap-2.5 text-xs font-serif text-[rgba(197,206,203,0.35)] mb-2.5 select-none">
+                    {selectedDayConfig.slots.map((sObj, idx) => (
+                      <React.Fragment key={sObj.time}>
+                        {idx > 0 && <span className="text-[rgba(197,206,203,0.25)]">·</span>}
+                        <span className="line-through">{sObj.time} 已額滿</span>
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  <p className="font-serif italic text-xs text-[#8E9A96] tracking-wide">
+                    本日私人席位已全數預約，敬請選擇其他日期
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  <div className="grid grid-cols-2 gap-2">
+                    {selectedDayConfig.slots.map((sObj) => {
+                      const slot = sObj.time
+                      const isBooked = sObj.status === 'booked'
+
+                      if (isAdminMode) {
+                        return (
+                          <div
+                            key={slot}
+                            className="flex items-center justify-between p-2.5 rounded-[6px] border border-[rgba(197,206,203,0.25)] bg-black/50"
+                          >
+                            <button
+                              type="button"
+                              onClick={() => handleAdminToggleSlot(selectedDay, slot)}
+                              className={`flex-1 text-left font-serif text-sm ${
+                                isBooked ? 'line-through text-stone-500' : 'text-white font-medium'
+                              }`}
+                            >
+                              {slot} {isBooked ? '(滿)' : '(可約)'}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => handleAdminRemoveSlot(e, selectedDay, slot)}
+                              className="p-1 text-stone-400 hover:text-rose-300"
+                            >
+                              <X size={13} />
+                            </button>
+                          </div>
+                        )
+                      }
+
+                      if (isBooked) {
+                        return (
+                          <div
+                            key={slot}
+                            className="p-2.5 text-center font-serif text-sm line-through text-[rgba(197,206,203,0.35)] select-none flex items-center justify-center"
+                          >
+                            {slot} (已額滿)
+                          </div>
+                        )
+                      }
+
+                      return (
+                        <button
+                          key={slot}
+                          type="button"
+                          onClick={() => handlePublicSlotClick(selectedDay, slot)}
+                          className="p-2.5 rounded-[4px] border border-[rgba(226,230,229,0.3)] hover:border-white bg-transparent text-center font-serif text-base text-[#FFFFFF] font-medium transition-all active:scale-[0.98] shadow-sm flex items-center justify-center gap-1.5"
+                        >
+                          <span>{slot}</span>
+                          <span className="text-xs text-[#7FA398] font-light">可預約</span>
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  {/* Mobile Admin add slot button */}
+                  {isAdminMode && (
+                    <button
+                      type="button"
+                      onClick={() => handleAdminAddSlot(selectedDay)}
+                      className="w-full mt-2 py-2 text-xs text-[#9A9E9D] hover:text-[#E2E6E5] border border-dashed border-[rgba(197,206,203,0.3)] rounded-[6px] flex items-center justify-center gap-1"
+                    >
+                      <Plus size={13} /> 新增 {selectedDay} 日時段
+                    </button>
+                  )}
+                </div>
               )}
             </div>
-          )}
-        </div>
+          )
+        })()}
       </div>
 
       {/* ── DESKTOP CALENDAR VIEW (>= sm) ── */}
@@ -565,7 +582,7 @@ export default function BookingCalendarCard({
                         onClick={() => handleAdminToggleRest(dayNum)}
                         className={`text-[10px] px-1.5 py-0.5 rounded font-serif italic border transition-colors ${
                           rest
-                            ? 'text-amber-200/90 border-amber-300/40 bg-amber-950/30 hover:bg-amber-950/60'
+                            ? 'text-[#7FA398] border-[#7FA398]/40 bg-[#7FA398]/10 hover:bg-[#7FA398]/20'
                             : 'text-[#C5CECB] border-[rgba(197,206,203,0.25)] hover:border-[#E2E6E5] bg-black/40'
                         }`}
                         title={rest ? '點擊取消公休 (開工)' : '點擊設為公休 (打烊)'}
@@ -701,22 +718,22 @@ export default function BookingCalendarCard({
       </div>
 
       {/* ── Studio Legend in Moonlit Platinum-Gray & Moonlight Ivory ── */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 pt-3 mt-3 border-t border-[rgba(197,206,203,0.12)] text-[11px] sm:text-xs text-[#9A9E9D] select-none">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-4 mt-4 border-t border-[rgba(197,206,203,0.12)] text-[11px] sm:text-xs text-[#9A9E9D] select-none">
         <div className="flex flex-wrap items-center gap-3.5 sm:gap-5">
-          <span className="flex items-center gap-1.5">
-            <span className="font-serif italic text-sm text-[#F4F7F6]" style={{ fontWeight: 500 }}>14:00</span>
-            <span className="font-serif italic text-xs">可預約席位</span>
+          <span className="flex items-center gap-1.5 font-serif">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#E2E6E5] inline-block" />
+            <span className="text-[#E2E6E5]">可預約席位</span>
           </span>
-          <span className="flex items-center gap-1.5">
-            <span className="font-serif italic text-sm line-through text-[rgba(226,230,229,0.28)]" style={{ fontWeight: 500, textDecorationColor: 'rgba(197, 206, 203, 0.4)' }}>17:30</span>
-            <span className="font-serif italic text-xs">已滿席</span>
+          <span className="flex items-center gap-1.5 font-serif text-[rgba(197,206,203,0.45)]">
+            <span className="font-medium">滿</span>
+            <span>已約滿</span>
           </span>
-          <span className="flex items-center gap-1.5">
-            <span className="font-serif text-sm text-[#9A9E9D]/70 font-light" style={{ transform: 'rotate(-35deg)', display: 'inline-block' }}>/</span>
-            <span className="font-serif italic text-xs">工坊公休日</span>
+          <span className="flex items-center gap-1.5 font-serif text-[#7FA398]">
+            <span className="font-medium">休</span>
+            <span>工坊公休</span>
           </span>
         </div>
-        <span className="font-serif italic text-xs text-[#9A9E9D]">
+        <span className="font-serif italic text-xs text-[#8E9A96]">
           Ekuo NAILS · 每日僅接待 3 組貴賓
         </span>
       </div>
