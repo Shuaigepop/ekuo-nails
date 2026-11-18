@@ -447,8 +447,8 @@ export function deletePortfolioItem(id) {
 
 export const DEFAULT_LINE_CONFIG = {
   channelAccessToken: '', // LINE Developers Channel Access Token (long-lived)
-  officialAccountId: '@ekuo_nails', // LINE 官方帳號 ID
-  adminNotifyTargetId: '', // 主理人 LINE User ID (格式: Uxxxxxxxx...)
+  officialAccountId: '@060knwhx', // LINE 官方帳號 ID
+  adminNotifyTargetId: 'U901b7127c1c3a01098cfcdff1083c941', // 主理人 LINE User ID (格式: Uxxxxxxxx...)
   autoPushEnabled: true,
   salonNotice: '✦ 請提前 5-10 分鐘抵達工坊。\n✦ 建議保留甲床自然長度 2mm 以上，以利立體建構打底。\n✦ 門市備有精緻茶點與氣泡水，請放鬆享受專屬時段。',
   salonAddress: '台北市大安區敦化南路一段 (高訂預約制私享工坊)',
@@ -459,7 +459,14 @@ export function getLineConfig() {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.LINE_CONFIG)
     if (raw) {
-      return { ...DEFAULT_LINE_CONFIG, ...JSON.parse(raw) }
+      const merged = { ...DEFAULT_LINE_CONFIG, ...JSON.parse(raw) }
+      if (!merged.officialAccountId || merged.officialAccountId === '@ekuo_nails') {
+        merged.officialAccountId = '@060knwhx'
+      }
+      if (!merged.adminNotifyTargetId) {
+        merged.adminNotifyTargetId = 'U901b7127c1c3a01098cfcdff1083c941'
+      }
+      return merged
     }
   } catch (err) {
     console.warn('Failed to parse line config store:', err)

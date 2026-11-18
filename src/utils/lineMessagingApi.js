@@ -58,7 +58,6 @@ export function buildReservationFlexMessage({ booking, config }) {
             color: '#8E9A96',
             size: 'xxs',
             margin: 'sm',
-            letterSpacing: '2px',
           },
         ],
       },
@@ -87,7 +86,7 @@ export function buildReservationFlexMessage({ booking, config }) {
             margin: 'lg',
             color: '#1a2923',
           },
-          // Booking Details Key-Value Rows
+          // Booking Details Key-Value Rows (Flex 2 : Flex 5 ratio)
           {
             type: 'box',
             layout: 'vertical',
@@ -98,32 +97,32 @@ export function buildReservationFlexMessage({ booking, config }) {
                 type: 'box',
                 layout: 'horizontal',
                 contents: [
-                  { type: 'text', text: '預約時段', color: '#6B7A75', size: 'xs', width: '70px' },
-                  { type: 'text', text: `${dateStr} · ${slot}`, color: '#E2E6E5', size: 'xs', weight: 'bold', flex: 1 },
+                  { type: 'text', text: '預約時段', color: '#6B7A75', size: 'xs', flex: 2 },
+                  { type: 'text', text: `${dateStr} · ${slot}`, color: '#E2E6E5', size: 'xs', weight: 'bold', flex: 5 },
                 ],
               },
               {
                 type: 'box',
                 layout: 'horizontal',
                 contents: [
-                  { type: 'text', text: '預約款式', color: '#6B7A75', size: 'xs', width: '70px' },
-                  { type: 'text', text: design, color: '#F4F7F6', size: 'xs', weight: 'bold', flex: 1 },
+                  { type: 'text', text: '預約款式', color: '#6B7A75', size: 'xs', flex: 2 },
+                  { type: 'text', text: design, color: '#F4F7F6', size: 'xs', weight: 'bold', flex: 5 },
                 ],
               },
               {
                 type: 'box',
                 layout: 'horizontal',
                 contents: [
-                  { type: 'text', text: '貴賓聯絡', color: '#6B7A75', size: 'xs', width: '70px' },
-                  { type: 'text', text: contact, color: '#C5CECB', size: 'xs', flex: 1 },
+                  { type: 'text', text: '貴賓聯絡', color: '#6B7A75', size: 'xs', flex: 2 },
+                  { type: 'text', text: contact, color: '#C5CECB', size: 'xs', flex: 5 },
                 ],
               },
               {
                 type: 'box',
                 layout: 'horizontal',
                 contents: [
-                  { type: 'text', text: '工坊地點', color: '#6B7A75', size: 'xs', width: '70px' },
-                  { type: 'text', text: address, color: '#C5CECB', size: 'xs', wrap: true, flex: 1 },
+                  { type: 'text', text: '工坊地點', color: '#6B7A75', size: 'xs', flex: 2 },
+                  { type: 'text', text: address, color: '#C5CECB', size: 'xs', wrap: true, flex: 5 },
                 ],
               },
             ],
@@ -148,7 +147,6 @@ export function buildReservationFlexMessage({ booking, config }) {
                 color: '#8BB0A5',
                 size: 'xxs',
                 weight: 'bold',
-                margin: 'none',
               },
               {
                 type: 'text',
@@ -201,7 +199,8 @@ export function buildReservationFlexMessage({ booking, config }) {
  * Generates direct LINE deep link pre-filling the message text
  */
 export function getLineDeepLink({ booking, config }) {
-  const oaId = (config?.officialAccountId || '@ekuo_nails').replace(/^@/, '')
+  const rawOa = config?.officialAccountId || '@060knwhx'
+  const oaId = (rawOa === '@ekuo_nails' ? '060knwhx' : rawOa).replace(/^@/, '') || '060knwhx'
   const bookingId = booking.id || `RES-${Date.now().toString().slice(-4)}`
   const guestName = booking.guestName || '貴賓'
   const dateStr = booking.dateStr || ''

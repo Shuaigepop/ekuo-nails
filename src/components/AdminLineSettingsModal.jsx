@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { X, Send, CheckCircle2, AlertCircle, MessageSquare } from 'lucide-react'
+import { X, Send, CheckCircle2, AlertCircle, MessageSquare, MessageCircle, ExternalLink } from 'lucide-react'
 import { getLineConfig, saveLineConfig } from '../utils/adminStorage'
-import { sendLineReservationNotification } from '../utils/lineMessagingApi'
+import { sendLineReservationNotification, getLineDeepLink } from '../utils/lineMessagingApi'
 
 export default function AdminLineSettingsModal({ isOpen, onClose }) {
   const [config, setConfig] = useState(() => getLineConfig())
@@ -18,6 +18,21 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
       setStatusMsg(null)
       onClose()
     }, 900)
+  }
+
+  // 方案 B：直接開啟 LINE 官方帳號並帶入預約憑證（免伺服器、100% 成功）
+  const handleTestDeepLink = () => {
+    const mockBooking = {
+      id: 'TEST-' + Math.floor(1000 + Math.random() * 9000),
+      guestName: '測試貴賓 (王小姐)',
+      dateStr: '2026年 11月 18日 (週三)',
+      slot: '14:00',
+      selectedDesign: '翠微夜宴 (Nocturne Emerald)',
+      contactInfo: '0988-123-456 (LINE: test_client)',
+    }
+    const url = getLineDeepLink({ booking: mockBooking, config })
+    window.open(url, '_blank')
+    setStatusMsg({ type: 'success', text: '已為您開啟 LINE 並自動填寫預約憑證！' })
   }
 
   const handleTestSend = async () => {
@@ -51,7 +66,15 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
     if (result.success) {
       setStatusMsg({ type: 'success', text: '測試憑證已成功推播至您的 LINE！' })
     } else {
-      setStatusMsg({ type: 'error', text: `推播失敗：${result.error || result.reason}` })
+      const is405 = result.error && (result.error.includes('405') || result.error.includes('Not Allowed'))
+      if (is405) {
+        setStatusMsg({
+          type: 'info',
+          text: '目前網站部署於靜態 GitHub Pages，靜態伺服器無法直接轉發 API POST 請求（405）。日常營運請使用左側綠色「測試開啟 LINE 官方帳號」（方案 B），直接開啟 LINE 帶入預約單，100% 穩定且無需架設後端！'
+        })
+      } else {
+        setStatusMsg({ type: 'error', text: `推播反饋：${result.error || result.reason}` })
+      }
     }
   }
 
@@ -74,18 +97,29 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
         </button>
 
         {/* Header */}
-        <div className="flex items-center gap-3 mb-6">
+        <div className="flex items-center gap-3 mb-5">
           <div className="w-10 h-10 rounded-full bg-[#12241b] border border-emerald-500/30 flex items-center justify-center text-emerald-400">
             <MessageSquare size={18} />
           </div>
           <div>
             <h3 className="font-serif text-2xl text-[#F4F7F6] font-normal tracking-wide">
-              LINE 官方帳號與自動推播配置
+              LINE 官方帳號與預約配置
             </h3>
             <span className="font-sans text-xs text-[#8E9A96]">
-              設定 LINE Messaging API，客人預約時自動推播黑曜翡翠電子憑證
+              支援 LINE 官方帳號一鍵預約直通（方案 B）與 Messaging API
             </span>
           </div>
+        </div>
+
+        {/* Option B Active Mode Announcement */}
+        <div className="mb-5 p-3.5 rounded-[10px] bg-emerald-950/25 border border-emerald-500/30">
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="inline-block px-1.5 py-0.5 rounded text-[10px] bg-[#06C755] text-white font-medium">方案 B 啟用中</span>
+            <span className="text-xs text-emerald-200 font-serif tracking-wide">LINE 官方帳號預約直通（零伺服器·100% 穩定）</span>
+          </div>
+          <p className="text-[11px] text-[#A2B3AE] leading-relaxed">
+            客人於官網預約完成後，系統會引導客人一鍵開啟 LINE 官方帳號（<span className="text-emerald-300 font-mono font-bold">@{config.officialAccountId?.replace(/^@/, '') || '060knwhx'}</span>），自動帶入預約單號、指定款式與個人電話傳送給您。完全不受 GitHub Pages 靜態環境限制！
+          </p>
         </div>
 
         {/* Feedback Message */}
@@ -185,15 +219,30 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
 
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-[rgba(197,206,203,0.15)]">
-            <button
-              type="button"
-              onClick={handleTestSend}
-              disabled={isTesting}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-[8px] border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 hover:text-emerald-200 text-xs font-serif tracking-wider transition-colors disabled:opacity-50"
-            >
-              <Send size={12} />
-              <span>{isTesting ? '發送中...' : '發送測試憑證'}</span>
-            </button>
+            <div className="flex items-center gap-2">
+              {/* Option B: Direct LINE Deep Link Button (100% Reliable, Zero Backend) */}
+              <button
+                type="button"
+                onClick={handleTestDeepLink}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-[8px] bg-[#06C755] hover:bg-[#05b34c] text-white text-xs font-serif tracking-wider transition-colors shadow-sm cursor-pointer"
+                title="立即在電腦或手機打開 LINE 測試自動帶入預約單"
+              >
+                <MessageCircle size={13} />
+                <span>測試開啟 LINE 官方帳號</span>
+              </button>
+
+              {/* Advanced API push test button */}
+              <button
+                type="button"
+                onClick={handleTestSend}
+                disabled={isTesting}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-[8px] border border-stone-700 hover:border-stone-500 text-stone-300 hover:text-white text-xs font-serif tracking-wider transition-colors disabled:opacity-50"
+                title="使用 Messaging API 推播（需本地 Vite 代理或伺服端環境）"
+              >
+                <Send size={11} />
+                <span>{isTesting ? '發送中...' : 'API 推播測試'}</span>
+              </button>
+            </div>
 
             <div className="flex items-center gap-2">
               <button
