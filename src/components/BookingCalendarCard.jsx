@@ -299,24 +299,21 @@ export default function BookingCalendarCard({
         </button>
       </div>
 
-      {/* ── MOBILE CALENDAR VIEW (< sm) ── */}
+      {/* ── MOBILE CALENDAR VIEW (< sm) — Pure Literary Whitespace ── */}
       <div className="block sm:hidden w-full select-none mb-4">
         {/* Mobile Weekday Labels */}
-        <div className="grid grid-cols-7 text-center border-b border-[rgba(197,206,203,0.15)] pb-1.5 mb-1.5">
+        <div className="grid grid-cols-7 text-center pb-2 mb-1">
           {WEEKDAYS_ZH.map((day) => (
-            <div key={day} className="font-serif text-[11px] text-[#9A9E9D]">
+            <div key={day} className="font-serif text-[11px] text-[#9A9E9D]/75">
               {day}
             </div>
           ))}
         </div>
 
-        {/* Mobile Days Grid - Exactly 100% width, zero horizontal scrolling */}
-        <div className="grid grid-cols-7 border-t border-l border-[rgba(197,206,203,0.12)] w-full">
+        {/* Mobile Days Grid - Airy floating numbers, zero spreadsheet cage */}
+        <div className="grid grid-cols-7 gap-y-2.5 gap-x-1 w-full">
           {Array.from({ length: leadingEmptyDays }).map((_, i) => (
-            <div
-              key={`empty-m-${i}`}
-              className="h-12 border-r border-b border-[rgba(197,206,203,0.08)] bg-transparent"
-            />
+            <div key={`empty-m-${i}`} className="h-10 bg-transparent" />
           ))}
 
           {Array.from({ length: totalDays }).map((_, i) => {
@@ -332,9 +329,9 @@ export default function BookingCalendarCard({
                 key={`m-day-${dayNum}`}
                 type="button"
                 onClick={() => setSelectedDay(dayNum)}
-                className={`h-12 border-r border-b border-[rgba(197,206,203,0.12)] flex flex-col items-center justify-center p-0.5 relative transition-all ${
+                className={`h-10 rounded-full flex flex-col items-center justify-center p-0.5 relative transition-all ${
                   isSelected
-                    ? 'bg-white/[0.12] ring-1 ring-inset ring-[#E2E6E5]'
+                    ? 'bg-white/[0.12] ring-1 ring-inset ring-[#E2E6E5]/70'
                     : isToday
                     ? 'bg-white/[0.04]'
                     : 'hover:bg-white/[0.03]'
@@ -352,11 +349,18 @@ export default function BookingCalendarCard({
                   {dayNum}
                 </span>
 
-                {/* Status indicator on mobile */}
+                {/* Status indicator on mobile: Pure elegant slash "/" for rest days */}
                 {rest ? (
-                  <span className="text-[10px] text-[#7FA398] font-serif mt-0.5 leading-none">休</span>
+                  <span
+                    className="font-serif text-[12px] text-[rgba(197,206,203,0.45)] font-light mt-0.5 leading-none select-none"
+                    style={{ transform: 'rotate(-25deg)', display: 'inline-block' }}
+                  >
+                    /
+                  </span>
                 ) : availCount === 0 ? (
-                  <span className="text-[9px] text-[rgba(226,230,229,0.3)] font-serif mt-0.5 leading-none">滿</span>
+                  <span className="text-[9px] text-[rgba(226,230,229,0.3)] font-serif mt-0.5 leading-none">
+                    滿
+                  </span>
                 ) : (
                   <span className="text-[9px] text-[#7FA398] font-serif mt-0.5 leading-none flex items-center gap-0.5">
                     <span className="w-1 h-1 rounded-full bg-[#7FA398] inline-block" />
@@ -385,8 +389,8 @@ export default function BookingCalendarCard({
                     {currentMonth + 1}月{selectedDay}日 ({selectedWeekday})
                   </span>
                   {isSelectedRest ? (
-                    <span className="text-xs text-[#7FA398] font-serif tracking-wider">
-                      工坊公休
+                    <span className="text-xs text-[rgba(197,206,203,0.45)] font-serif tracking-wider">
+                      /
                     </span>
                   ) : isSelectedFullyBooked ? (
                     <span className="text-xs text-[rgba(226,230,229,0.45)] font-serif tracking-wider">
@@ -412,8 +416,8 @@ export default function BookingCalendarCard({
 
               {/* Slots list on mobile */}
               {isSelectedRest ? (
-                <div className="text-center py-4 text-[#9A9E9D] font-serif text-xs leading-relaxed">
-                  本日為工坊公休日。如需預約特殊時段，歡迎點擊 LINE 官方私訊主理人。
+                <div className="text-center py-6 text-[rgba(197,206,203,0.35)] font-serif text-3xl font-light select-none">
+                  /
                 </div>
               ) : isSelectedFullyBooked && !isAdminMode ? (
                 /* Dynamic Full-Day Empty State: Clean un-boxed strikethrough text with polite salon note */
@@ -505,7 +509,7 @@ export default function BookingCalendarCard({
         })()}
       </div>
 
-      {/* ── DESKTOP CALENDAR VIEW (>= sm) ── */}
+      {/* ── DESKTOP CALENDAR VIEW (>= sm) — Literary Editorial Layout ── */}
       <div className="hidden sm:block w-full overflow-x-auto">
         <div className="min-w-[560px] sm:min-w-[620px]">
           {/* Weekday Labels (MON to SUN) — Muted Platinum-Gray */}
@@ -520,13 +524,13 @@ export default function BookingCalendarCard({
             ))}
           </div>
 
-          {/* 7-Column Calendar Grid with Ultra-Delicate Platinum-Gray Borders */}
-          <div className="grid grid-cols-7 border-t border-l border-[rgba(197,206,203,0.12)]">
+          {/* 7-Column Editorial Grid: Breathable whitespace with subtle horizontal dividers only */}
+          <div className="grid grid-cols-7 gap-x-2">
             {/* Empty padding cells before first day */}
             {Array.from({ length: leadingEmptyDays }).map((_, i) => (
               <div
                 key={`empty-${i}`}
-                className="min-h-[118px] sm:min-h-[132px] border-r border-b border-[rgba(197,206,203,0.12)] bg-transparent"
+                className="min-h-[118px] sm:min-h-[132px] border-b border-[rgba(197,206,203,0.08)] bg-transparent"
               />
             ))}
 
@@ -543,7 +547,7 @@ export default function BookingCalendarCard({
               return (
                 <div
                   key={dayNum}
-                  className={`min-h-[124px] sm:min-h-[140px] p-2 sm:p-2.5 border-r border-b border-[rgba(197,206,203,0.12)] flex flex-col justify-between relative transition-colors ${
+                  className={`min-h-[124px] sm:min-h-[140px] p-2 sm:p-2.5 border-b border-[rgba(197,206,203,0.08)] flex flex-col justify-between relative transition-colors ${
                     isAdminMode ? 'hover:bg-white/[0.02]' : ''
                   }`}
                 >
@@ -587,7 +591,7 @@ export default function BookingCalendarCard({
                         }`}
                         title={rest ? '點擊取消公休 (開工)' : '點擊設為公休 (打烊)'}
                       >
-                        {rest ? '公休' : '營業'}
+                        {rest ? '/' : '營業'}
                       </button>
                     )}
                   </div>
@@ -728,8 +732,8 @@ export default function BookingCalendarCard({
             <span className="font-medium">滿</span>
             <span>已約滿</span>
           </span>
-          <span className="flex items-center gap-1.5 font-serif text-[#7FA398]">
-            <span className="font-medium">休</span>
+          <span className="flex items-center gap-1.5 font-serif text-[rgba(197,206,203,0.45)]">
+            <span className="text-sm font-light">/</span>
             <span>工坊公休</span>
           </span>
         </div>
