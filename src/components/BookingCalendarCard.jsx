@@ -69,6 +69,20 @@ export default function BookingCalendarCard({
   const [activeSlotModal, setActiveSlotModal] = useState(null)
   // activeSlotModal format: { year, month, day, weekday, slot }
 
+  // Lock body scroll and prevent viewport shifts when booking modal is active
+  useEffect(() => {
+    if (activeSlotModal) {
+      const originalOverflow = document.body.style.overflow
+      const originalTouchAction = document.body.style.touchAction
+      document.body.style.overflow = 'hidden'
+      document.body.style.touchAction = 'none'
+      return () => {
+        document.body.style.overflow = originalOverflow
+        document.body.style.touchAction = originalTouchAction
+      }
+    }
+  }, [activeSlotModal])
+
   // Form input state
   const [guestName, setGuestName] = useState('')
   const [contactInfo, setContactInfo] = useState('')
@@ -747,14 +761,26 @@ export default function BookingCalendarCard({
       {/* PUBLIC VISITOR PROGRESSIVE DISCLOSURE MODAL                        */}
       {/* ================================================================= */}
       {activeSlotModal && !isAdminMode && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn"
+          style={{ overscrollBehavior: 'contain', touchAction: 'pan-y' }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setActiveSlotModal(null)
+          }}
+          onTouchMove={(e) => {
+            if (e.target === e.currentTarget) e.preventDefault()
+          }}
+        >
           <div
-            className="relative w-full max-w-md p-6 sm:p-7 rounded-[18px]"
+            className="relative w-full max-w-md p-6 sm:p-7 rounded-[18px] max-h-[90dvh] overflow-y-auto"
             style={{
-              backgroundColor: 'rgba(14, 18, 16, 0.96)',
+              backgroundColor: 'rgba(14, 18, 16, 0.98)',
               border: '1px solid rgba(197, 206, 203, 0.25)',
               boxShadow: '0 25px 60px rgba(0, 0, 0, 0.95)',
+              overscrollBehavior: 'contain',
+              WebkitOverflowScrolling: 'touch',
             }}
+            onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Close Button */}
             <button
@@ -801,8 +827,7 @@ export default function BookingCalendarCard({
                       value={guestName}
                       onChange={(e) => setGuestName(e.target.value)}
                       placeholder="請輸入貴賓尊稱，如：王小姐"
-                      className="w-full px-3.5 py-2.5 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-sans"
-                      autoFocus
+                      className="w-full px-3.5 py-2.5 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-base sm:text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-sans"
                     />
                   </div>
 
@@ -815,7 +840,7 @@ export default function BookingCalendarCard({
                       value={contactInfo}
                       onChange={(e) => setContactInfo(e.target.value)}
                       placeholder="請輸入聯繫手機或 LINE ID"
-                      className="w-full px-3.5 py-2.5 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-sans"
+                      className="w-full px-3.5 py-2.5 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-base sm:text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-sans"
                     />
                   </div>
 

@@ -159,7 +159,7 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
               value={config.channelAccessToken}
               onChange={(e) => setConfig({ ...config, channelAccessToken: e.target.value })}
               placeholder="貼上 LINE Developers 後台的長期 Token"
-              className="w-full px-3.5 py-2 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-mono"
+              className="w-full px-3.5 py-2 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-base sm:text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-mono"
             />
             <span className="block font-sans text-[11px] text-[#6B7A75] mt-1">
               可在 LINE Developers Console &gt; Messaging API &gt; Channel access token 複製
@@ -177,7 +177,7 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
                 value={config.officialAccountId}
                 onChange={(e) => setConfig({ ...config, officialAccountId: e.target.value })}
                 placeholder="@060knwhx 或 https://lin.ee/..."
-                className="w-full px-3.5 py-2 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-sans"
+                className="w-full px-3.5 py-2 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-base sm:text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-sans"
               />
               <span className="block font-sans text-[11px] text-[#6B7A75] mt-1">
                 支援輸入官方 ID（如 @060knwhx）或官方加好友連結（如 https://lin.ee/...）
@@ -194,7 +194,7 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
                 value={config.adminNotifyTargetId}
                 onChange={(e) => setConfig({ ...config, adminNotifyTargetId: e.target.value })}
                 placeholder="Uxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-                className="w-full px-3.5 py-2 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-mono"
+                className="w-full px-3.5 py-2 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-base sm:text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-mono"
               />
             </div>
           </div>

@@ -269,7 +269,7 @@ export default function StoryOverlays({
       {/* ================================================================= */}
       <div
         id="portfolio-scroll-container"
-        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[85px] sm:pt-[95px] overflow-y-auto bg-[#070b09]"
+        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[85px] sm:pt-[95px] overflow-y-auto overscroll-contain bg-[#070b09]"
         style={{
           transform: `translate3d(0, ${portfolioTranslateY}px, 0) scale(${portfolioScale})`,
           opacity: portfolioOpacity,
@@ -277,6 +277,8 @@ export default function StoryOverlays({
           pointerEvents: portfolioOpacity > 0.5 && calendarScrollProgress < 0.5 ? 'auto' : 'none',
           transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease-out',
           zIndex: 20,
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch',
         }}
       >
         <div className="w-full max-w-6xl flex justify-center my-auto pb-12">
@@ -293,7 +295,7 @@ export default function StoryOverlays({
       {/* ================================================================= */}
       <div
         id="calendar-scroll-container"
-        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[75px] sm:pt-[85px] overflow-y-auto bg-[#070b09] border-t border-[#E2E6E5]/20 shadow-[0_-35px_100px_rgba(0,0,0,0.95)]"
+        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[75px] sm:pt-[85px] overflow-y-auto overscroll-contain bg-[#070b09] border-t border-[#E2E6E5]/20 shadow-[0_-35px_100px_rgba(0,0,0,0.95)]"
         style={{
           transform: `translate3d(0, ${calendarTranslateY}vh, 0)`,
           opacity: calendarOpacity,
@@ -301,6 +303,8 @@ export default function StoryOverlays({
           pointerEvents: calendarScrollProgress > 0.5 ? 'auto' : 'none',
           transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease-out',
           zIndex: 30,
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch',
         }}
       >
         {/* Subtle Architectural Sheet Grab Bar */}
