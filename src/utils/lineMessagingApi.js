@@ -196,20 +196,17 @@ export function buildReservationFlexMessage({ booking, config }) {
 }
 
 /**
- * Generates direct LINE deep link pre-filling the message text
+ * Formats standard plain text reservation ticket
  */
-export function getLineDeepLink({ booking, config }) {
-  const rawOa = config?.officialAccountId || '@060knwhx'
-  const oaId = (rawOa === '@ekuo_nails' ? '060knwhx' : rawOa).replace(/^@/, '') || '060knwhx'
-  const bookingId = booking.id || `RES-${Date.now().toString().slice(-4)}`
-  const guestName = booking.guestName || '貴賓'
-  const dateStr = booking.dateStr || ''
-  const slot = booking.slot || ''
-  const design = booking.selectedDesign || '客製高訂款'
-  const contact = booking.contactInfo || ''
+export function formatReservationText({ booking }) {
+  const bookingId = booking?.id || `RES-${Date.now().toString().slice(-4)}`
+  const guestName = booking?.guestName || '貴賓'
+  const dateStr = booking?.dateStr || ''
+  const slot = booking?.slot || ''
+  const design = booking?.selectedDesign || '客製高訂款'
+  const contact = booking?.contactInfo || ''
 
-  const prefilledText =
-`【Ekuo NAILS 私人高訂預約憑證】
+  return `【Ekuo NAILS 私人高訂預約憑證】
 預約單號：#${bookingId}
 貴賓尊稱：${guestName}
 預約時段：${dateStr} · ${slot}
@@ -217,9 +214,57 @@ export function getLineDeepLink({ booking, config }) {
 聯絡資訊：${contact}
 
 我已於官網提交席位預約，請確認我的高訂時段！`
+}
+
+/**
+ * Generates direct LINE deep link pre-filling the message text.
+ * Intelligently handles:
+ * - OA IDs (e.g. "@060knwhx" or "060knwhx")
+ * - lin.ee short links (e.g. "https://lin.ee/xxxxx")
+ * - line.me full URLs (e.g. "https://line.me/R/ti/p/@060knwhx")
+ * - Personal LINE links (e.g. "https://line.me/ti/p/~...")
+ */
+export function getLineDeepLink({ booking, config }) {
+  const rawInput = (config?.officialAccountId || '@060knwhx').trim()
+  const prefilledText = formatReservationText({ booking })
+  const encodedText = encodeURIComponent(prefilledText)
+
+  // 1. If it's a lin.ee short link (e.g. https://lin.ee/xxxxx or lin.ee/xxxxx)
+  if (rawInput.includes('lin.ee/')) {
+    return rawInput.startsWith('http') ? rawInput : `https://${rawInput}`
+  }
+
+  // 2. If it's a full URL (e.g. https://line.me/R/ti/p/@060knwhx or https://line.me/ti/p/~someone)
+  if (rawInput.startsWith('http://') || rawInput.startsWith('https://')) {
+    // If it contains an @ID (like line.me/R/ti/p/@060knwhx or line.me/R/oaMessage/@060knwhx)
+    const oaMatch = rawInput.match(/@([a-zA-Z0-9_\-]+)/)
+    if (oaMatch && oaMatch[1]) {
+      return `https://line.me/R/oaMessage/@${oaMatch[1]}/?${encodedText}`
+    }
+
+    // If it contains personal tilde ~ID
+    const personalMatch = rawInput.match(/ti\/p\/~([a-zA-Z0-9_\-]+)/)
+    if (personalMatch && personalMatch[1]) {
+      return rawInput
+    }
+
+    // If it's an existing oaMessage link
+    if (rawInput.includes('/oaMessage/')) {
+      return rawInput.includes('?') ? `${rawInput}&${encodedText}` : `${rawInput}/?${encodedText}`
+    }
+
+    // Any other direct URL
+    return rawInput
+  }
+
+  // 3. If it's an ID (e.g. "@060knwhx", "060knwhx", or legacy "ekuo_nails")
+  let cleanId = rawInput.replace(/^@/, '')
+  if (!cleanId || cleanId === 'ekuo_nails') {
+    cleanId = '060knwhx'
+  }
 
   // Direct line.me URL scheme that opens official account and pre-fills message
-  return `https://line.me/R/oaMessage/@${oaId}/?${encodeURIComponent(prefilledText)}`
+  return `https://line.me/R/oaMessage/@${cleanId}/?${encodedText}`
 }
 
 /**

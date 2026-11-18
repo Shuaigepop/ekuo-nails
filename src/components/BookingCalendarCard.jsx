@@ -24,6 +24,7 @@ import {
 import {
   getLineDeepLink,
   sendLineReservationNotification,
+  formatReservationText,
 } from '../utils/lineMessagingApi'
 
 // Base simulation reference: November 2026
@@ -891,7 +892,15 @@ export default function BookingCalendarCard({
                   href={getLineDeepLink({ booking: confirmedBooking || {}, config: getLineConfig() })}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2.5 mb-2.5 rounded-[8px] flex items-center justify-center gap-2 font-serif text-xs tracking-wider font-medium transition-all hover:brightness-110 shadow-lg text-white"
+                  onClick={() => {
+                    try {
+                      const text = formatReservationText({ booking: confirmedBooking || {} })
+                      navigator.clipboard?.writeText(text)
+                    } catch (e) {
+                      // ignore clipboard error
+                    }
+                  }}
+                  className="w-full py-2.5 mb-2.5 rounded-[8px] flex items-center justify-center gap-2 font-serif text-xs tracking-wider font-medium transition-all hover:brightness-110 shadow-lg text-white cursor-pointer"
                   style={{
                     backgroundColor: '#06C755',
                   }}

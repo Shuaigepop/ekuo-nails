@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { X, Send, CheckCircle2, AlertCircle, MessageSquare, MessageCircle, ExternalLink } from 'lucide-react'
 import { getLineConfig, saveLineConfig } from '../utils/adminStorage'
-import { sendLineReservationNotification, getLineDeepLink } from '../utils/lineMessagingApi'
+import { sendLineReservationNotification, getLineDeepLink, formatReservationText } from '../utils/lineMessagingApi'
 
 export default function AdminLineSettingsModal({ isOpen, onClose }) {
   const [config, setConfig] = useState(() => getLineConfig())
@@ -22,6 +22,7 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
 
   // 方案 B：直接開啟 LINE 官方帳號並帶入預約憑證（免伺服器、100% 成功）
   const handleTestDeepLink = () => {
+    saveLineConfig(config) // 自動儲存最新輸入，防止未按儲存導致仍使用舊連結
     const mockBooking = {
       id: 'TEST-' + Math.floor(1000 + Math.random() * 9000),
       guestName: '測試貴賓 (王小姐)',
@@ -30,9 +31,14 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
       selectedDesign: '翠微夜宴 (Nocturne Emerald)',
       contactInfo: '0988-123-456 (LINE: test_client)',
     }
+    try {
+      const text = formatReservationText({ booking: mockBooking })
+      navigator.clipboard?.writeText(text)
+    } catch (e) {}
+
     const url = getLineDeepLink({ booking: mockBooking, config })
     window.open(url, '_blank')
-    setStatusMsg({ type: 'success', text: '已為您開啟 LINE 並自動填寫預約憑證！' })
+    setStatusMsg({ type: 'success', text: '已自動儲存最新配置並開啟 LINE！預約單文字亦已同步複製到剪貼簿。' })
   }
 
   const handleTestSend = async () => {
@@ -160,19 +166,22 @@ export default function AdminLineSettingsModal({ isOpen, onClose }) {
             </span>
           </div>
 
-          {/* Official Account ID */}
+          {/* Official Account ID or Add-Friend Link */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block font-serif text-xs text-[#C5CECB] tracking-wide mb-1">
-                LINE 官方帳號 ID
+                LINE 官方帳號 ID / 加好友連結
               </label>
               <input
                 type="text"
                 value={config.officialAccountId}
                 onChange={(e) => setConfig({ ...config, officialAccountId: e.target.value })}
-                placeholder="@ekuo_nails"
+                placeholder="@060knwhx 或 https://lin.ee/..."
                 className="w-full px-3.5 py-2 rounded-[8px] bg-black/40 border border-[rgba(197,206,203,0.22)] focus:border-[#E2E6E5] text-xs text-[#F2F5F4] placeholder:text-[#9A9E9D]/40 outline-none transition-colors font-sans"
               />
+              <span className="block font-sans text-[11px] text-[#6B7A75] mt-1">
+                支援輸入官方 ID（如 @060knwhx）或官方加好友連結（如 https://lin.ee/...）
+              </span>
             </div>
 
             {/* Admin Target User ID */}
