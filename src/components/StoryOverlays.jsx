@@ -99,7 +99,7 @@ export default function StoryOverlays({
 
       {/* ================================================================= */}
       {/* SECTION 2: Top Row — 03 (Topcoat)                                */}
-      {/* Desktop: full callout with leader line. Mobile: compact label.    */}
+      {/* Desktop: full callout with leader line.                          */}
       {/* ================================================================= */}
       {/* Desktop callout */}
       <div
@@ -121,22 +121,6 @@ export default function StoryOverlays({
         </div>
         <div className="flex-1 h-[1px] min-w-[32px]" style={{ background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.15), rgba(226, 230, 229, 0.55))' }} />
         <div className="flex-shrink-0 rounded-full" style={{ width: '4px', height: '4px', backgroundColor: '#EEF2F1', boxShadow: '0 0 8px 1px rgba(238, 242, 241, 0.9), 0 0 2px #FFFFFF' }} />
-      </div>
-      {/* Mobile compact label */}
-      <div
-        className="absolute flex sm:hidden items-center pointer-events-none select-none"
-        style={{
-          top: '25%',
-          left: '4%',
-          transform: `translateY(-50%)`,
-          opacity: layer3Opacity,
-          visibility: layer3Opacity > 0.02 ? 'visible' : 'hidden',
-        }}
-      >
-        <div className="px-2.5 py-1.5 rounded-md" style={{ backgroundColor: 'rgba(7, 11, 9, 0.75)', backdropFilter: 'blur(8px)' }}>
-          <span className="block font-serif italic text-[10px] tracking-[0.2em] text-[#8BB0A5] uppercase">03</span>
-          <span className="block font-serif text-[12px] text-[#F4F7F6] font-medium leading-tight" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>水光鏡面封層</span>
-        </div>
       </div>
 
       {/* ================================================================= */}
@@ -161,22 +145,6 @@ export default function StoryOverlays({
           <span className="block font-serif italic text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5">02</span>
           <span className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]" style={{ fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif", fontSize: 'clamp(15px, 1.2vw, 18px)', fontWeight: 500, letterSpacing: '0.06em', textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)' }}>手繪浮雕與貓眼流光</span>
           <span className="block font-sans text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none">一筆一畫堆疊立體金屬紋理</span>
-        </div>
-      </div>
-      {/* Mobile compact label */}
-      <div
-        className="absolute flex sm:hidden items-center pointer-events-none select-none"
-        style={{
-          top: '45%',
-          right: '4%',
-          transform: `translateY(-50%)`,
-          opacity: layer2Opacity,
-          visibility: layer2Opacity > 0.02 ? 'visible' : 'hidden',
-        }}
-      >
-        <div className="px-2.5 py-1.5 rounded-md text-right" style={{ backgroundColor: 'rgba(7, 11, 9, 0.75)', backdropFilter: 'blur(8px)' }}>
-          <span className="block font-serif italic text-[10px] tracking-[0.2em] text-[#8BB0A5] uppercase">02</span>
-          <span className="block font-serif text-[12px] text-[#F4F7F6] font-medium leading-tight" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>手繪浮雕與貓眼</span>
         </div>
       </div>
 
@@ -204,20 +172,51 @@ export default function StoryOverlays({
         <div className="flex-1 h-[1px] min-w-[32px]" style={{ background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.15), rgba(226, 230, 229, 0.55))' }} />
         <div className="flex-shrink-0 rounded-full" style={{ width: '4px', height: '4px', backgroundColor: '#EEF2F1', boxShadow: '0 0 8px 1px rgba(238, 242, 241, 0.9), 0 0 2px #FFFFFF' }} />
       </div>
-      {/* Mobile compact label */}
+
+      {/* ================================================================= */}
+      {/* MOBILE ONLY: Architectural 3-Layer Craft Ribbon (Top Ambient Space) */}
+      {/* Positioned cleanly above the nails (top: 17%), ZERO nail overlap    */}
+      {/* ================================================================= */}
       <div
-        className="absolute flex sm:hidden items-center pointer-events-none select-none"
+        className="absolute inset-x-0 flex sm:hidden flex-col items-center justify-center px-4 pointer-events-none select-none"
         style={{
-          top: '72%',
-          left: '4%',
-          transform: `translateY(-50%)`,
-          opacity: layer1Opacity,
-          visibility: layer1Opacity > 0.02 ? 'visible' : 'hidden',
+          top: '17%',
+          transform: 'translateY(-50%)',
+          opacity: Math.max(layer3Opacity, layer2Opacity, layer1Opacity),
+          visibility: Math.max(layer3Opacity, layer2Opacity, layer1Opacity) > 0.02 ? 'visible' : 'hidden',
+          transition: 'opacity 0.3s ease-out',
         }}
       >
-        <div className="px-2.5 py-1.5 rounded-md" style={{ backgroundColor: 'rgba(7, 11, 9, 0.75)', backdropFilter: 'blur(8px)' }}>
-          <span className="block font-serif italic text-[10px] tracking-[0.2em] text-[#8BB0A5] uppercase">01</span>
-          <span className="block font-serif text-[12px] text-[#F4F7F6] font-medium leading-tight" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>溫和護甲打底</span>
+        <div className="flex items-center gap-2 mb-1.5">
+          <span className="w-4 h-[1px] bg-[#8BB0A5]/40" />
+          <span className="font-serif italic text-[10px] tracking-[0.24em] text-[#8BB0A5] uppercase">
+            3D Craft Deconstruction
+          </span>
+          <span className="w-4 h-[1px] bg-[#8BB0A5]/40" />
+        </div>
+
+        <div className="flex items-center justify-between w-full max-w-[330px] px-3.5 py-2 rounded-full border border-[rgba(226,230,229,0.18)] bg-[rgba(7,11,9,0.85)] backdrop-blur-md shadow-[0_4px_24px_rgba(0,0,0,0.6)]">
+          {/* Layer 03 */}
+          <div className="flex flex-col items-center flex-1 text-center">
+            <span className="font-serif italic text-[9px] tracking-widest text-[#8BB0A5]">03 封層</span>
+            <span className="font-serif text-[11px] text-[#F4F7F6] font-medium tracking-wide">水光鏡面</span>
+          </div>
+
+          <div className="w-[1px] h-5 bg-[rgba(226,230,229,0.18)] flex-shrink-0" />
+
+          {/* Layer 02 */}
+          <div className="flex flex-col items-center flex-1 text-center">
+            <span className="font-serif italic text-[9px] tracking-widest text-[#8BB0A5]">02 浮雕</span>
+            <span className="font-serif text-[11px] text-[#F4F7F6] font-medium tracking-wide">手繪鎏金</span>
+          </div>
+
+          <div className="w-[1px] h-5 bg-[rgba(226,230,229,0.18)] flex-shrink-0" />
+
+          {/* Layer 01 */}
+          <div className="flex flex-col items-center flex-1 text-center">
+            <span className="font-serif italic text-[9px] tracking-widest text-[#8BB0A5]">01 底膠</span>
+            <span className="font-serif text-[11px] text-[#F4F7F6] font-medium tracking-wide">溫和護甲</span>
+          </div>
         </div>
       </div>
 
