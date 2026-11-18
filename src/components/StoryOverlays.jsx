@@ -98,186 +98,127 @@ export default function StoryOverlays({
       </div>
 
       {/* ================================================================= */}
-      {/* SECTION 2: Top Row — 03 (Topcoat: dot rests at center of 1st nail) */}
+      {/* SECTION 2: Top Row — 03 (Topcoat)                                */}
+      {/* Desktop: full callout with leader line. Mobile: compact label.    */}
       {/* ================================================================= */}
+      {/* Desktop callout */}
       <div
-        className="absolute flex items-center pointer-events-none select-none"
+        className="absolute hidden sm:flex items-center pointer-events-none select-none"
         style={{
           top: '32%',
           left: '2%',
-          width: 'clamp(180px, 32.3vw, 620px)',
+          width: 'clamp(280px, 32.3vw, 620px)',
           transform: `translateY(-50%) translateX(${(1 - layer3Opacity) * -20}px)`,
           opacity: layer3Opacity,
           visibility: layer3Opacity > 0.02 ? 'visible' : 'hidden',
           transition: 'transform 0.4s ease-out',
         }}
       >
-        {/* Text block: right-aligned in outer margin, strictly outside nails */}
-        <div className="flex-shrink-0 text-right pr-2.5 sm:pr-4 select-none max-w-[145px] sm:max-w-[210px]">
-          <span
-            className="block font-serif italic text-[12px] sm:text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
-          >
-            03
-          </span>
-          <span
-            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]"
-            style={{
-              fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif",
-              fontSize: 'clamp(13px, 1.2vw, 18px)',
-              fontWeight: 500,
-              letterSpacing: '0.06em',
-              textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)',
-            }}
-          >
-            水光鏡面封層
-          </span>
-          <span
-            className="block font-sans text-[11px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none"
-          >
-            清透抗刮，持久鎖光
-          </span>
+        <div className="flex-shrink-0 text-right pr-4 select-none max-w-[210px]">
+          <span className="block font-serif italic text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5">03</span>
+          <span className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]" style={{ fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif", fontSize: 'clamp(15px, 1.2vw, 18px)', fontWeight: 500, letterSpacing: '0.06em', textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)' }}>水光鏡面封層</span>
+          <span className="block font-sans text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none">清透抗刮，持久鎖光</span>
         </div>
-
-        {/* 1px Liquid Silver horizontal leader line extending into the center of the 1st nail */}
-        <div
-          className="flex-1 h-[1px] min-w-[16px] sm:min-w-[32px]"
-          style={{
-            background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.15), rgba(226, 230, 229, 0.55))',
-          }}
-        />
-
-        {/* Terminal Glowing Dot (4px) resting right at the center point of the 1st nail */}
-        <div
-          className="flex-shrink-0 rounded-full"
-          style={{
-            width: '4px',
-            height: '4px',
-            backgroundColor: '#EEF2F1',
-            boxShadow: '0 0 8px 1px rgba(238, 242, 241, 0.9), 0 0 2px #FFFFFF',
-          }}
-        />
+        <div className="flex-1 h-[1px] min-w-[32px]" style={{ background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.15), rgba(226, 230, 229, 0.55))' }} />
+        <div className="flex-shrink-0 rounded-full" style={{ width: '4px', height: '4px', backgroundColor: '#EEF2F1', boxShadow: '0 0 8px 1px rgba(238, 242, 241, 0.9), 0 0 2px #FFFFFF' }} />
+      </div>
+      {/* Mobile compact label */}
+      <div
+        className="absolute flex sm:hidden items-center pointer-events-none select-none"
+        style={{
+          top: '25%',
+          left: '4%',
+          transform: `translateY(-50%)`,
+          opacity: layer3Opacity,
+          visibility: layer3Opacity > 0.02 ? 'visible' : 'hidden',
+        }}
+      >
+        <div className="px-2.5 py-1.5 rounded-md" style={{ backgroundColor: 'rgba(7, 11, 9, 0.75)', backdropFilter: 'blur(8px)' }}>
+          <span className="block font-serif italic text-[10px] tracking-[0.2em] text-[#8BB0A5] uppercase">03</span>
+          <span className="block font-serif text-[12px] text-[#F4F7F6] font-medium leading-tight" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>水光鏡面封層</span>
+        </div>
       </div>
 
       {/* ================================================================= */}
-      {/* SECTION 3: Middle Row — 02 (Relief/Cat-Eye: dot at center of 5th nail, zero text overlap) */}
+      {/* SECTION 3: Middle Row — 02 (Relief/Cat-Eye)                      */}
       {/* ================================================================= */}
+      {/* Desktop callout */}
       <div
-        className="absolute flex items-center justify-end pointer-events-none select-none"
+        className="absolute hidden sm:flex items-center justify-end pointer-events-none select-none"
         style={{
           top: '51.5%',
           right: '2%',
-          width: 'clamp(180px, 32.2vw, 640px)',
+          width: 'clamp(300px, 32.2vw, 640px)',
           transform: `translateY(-50%) translateX(${(1 - layer2Opacity) * 20}px)`,
           opacity: layer2Opacity,
           visibility: layer2Opacity > 0.02 ? 'visible' : 'hidden',
           transition: 'transform 0.4s ease-out',
         }}
       >
-        {/* Terminal Glowing Dot (4px) resting right at the center point of the 5th gold nail */}
-        <div
-          className="flex-shrink-0 rounded-full"
-          style={{
-            width: '4px',
-            height: '4px',
-            backgroundColor: '#EEF2F1',
-            boxShadow: '0 0 8px 1px rgba(238, 242, 241, 0.9), 0 0 2px #FFFFFF',
-          }}
-        />
-
-        {/* 1px Liquid Silver horizontal leader line extending leftward from text to nail center */}
-        <div
-          className="flex-1 h-[1px] min-w-[16px] sm:min-w-[36px]"
-          style={{
-            background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.55), rgba(226, 230, 229, 0.15))',
-          }}
-        />
-
-        {/* Text block: left-aligned, cleanly in right dark margin, zero overlap on the 5th nail */}
-        <div className="flex-shrink-0 text-left pl-2.5 sm:pl-4 select-none max-w-[145px] sm:max-w-[210px]">
-          <span
-            className="block font-serif italic text-[12px] sm:text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
-          >
-            02
-          </span>
-          <span
-            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]"
-            style={{
-              fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif",
-              fontSize: 'clamp(13px, 1.2vw, 18px)',
-              fontWeight: 500,
-              letterSpacing: '0.06em',
-              textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)',
-            }}
-          >
-            手繪浮雕與貓眼
-          </span>
-          <span
-            className="block font-sans text-[11px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none"
-          >
-            堆疊立體金屬流光
-          </span>
+        <div className="flex-shrink-0 rounded-full" style={{ width: '4px', height: '4px', backgroundColor: '#EEF2F1', boxShadow: '0 0 8px 1px rgba(238, 242, 241, 0.9), 0 0 2px #FFFFFF' }} />
+        <div className="flex-1 h-[1px] min-w-[36px]" style={{ background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.55), rgba(226, 230, 229, 0.15))' }} />
+        <div className="flex-shrink-0 text-left pl-4 select-none max-w-[210px]">
+          <span className="block font-serif italic text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5">02</span>
+          <span className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]" style={{ fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif", fontSize: 'clamp(15px, 1.2vw, 18px)', fontWeight: 500, letterSpacing: '0.06em', textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)' }}>手繪浮雕與貓眼流光</span>
+          <span className="block font-sans text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none">一筆一畫堆疊立體金屬紋理</span>
+        </div>
+      </div>
+      {/* Mobile compact label */}
+      <div
+        className="absolute flex sm:hidden items-center pointer-events-none select-none"
+        style={{
+          top: '45%',
+          right: '4%',
+          transform: `translateY(-50%)`,
+          opacity: layer2Opacity,
+          visibility: layer2Opacity > 0.02 ? 'visible' : 'hidden',
+        }}
+      >
+        <div className="px-2.5 py-1.5 rounded-md text-right" style={{ backgroundColor: 'rgba(7, 11, 9, 0.75)', backdropFilter: 'blur(8px)' }}>
+          <span className="block font-serif italic text-[10px] tracking-[0.2em] text-[#8BB0A5] uppercase">02</span>
+          <span className="block font-serif text-[12px] text-[#F4F7F6] font-medium leading-tight" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>手繪浮雕與貓眼</span>
         </div>
       </div>
 
       {/* ================================================================= */}
-      {/* SECTION 4: Bottom Row — 01 (Nude Base: dot rests at center of 1st nail) */}
+      {/* SECTION 4: Bottom Row — 01 (Nude Base)                            */}
       {/* ================================================================= */}
+      {/* Desktop callout */}
       <div
-        className="absolute flex items-center pointer-events-none select-none"
+        className="absolute hidden sm:flex items-center pointer-events-none select-none"
         style={{
           top: '71%',
           left: '2%',
-          width: 'clamp(180px, 31.9vw, 610px)',
+          width: 'clamp(280px, 31.9vw, 610px)',
           transform: `translateY(-50%) translateX(${(1 - layer1Opacity) * -20}px)`,
           opacity: layer1Opacity,
           visibility: layer1Opacity > 0.02 ? 'visible' : 'hidden',
           transition: 'transform 0.4s ease-out',
         }}
       >
-        {/* Text block: right-aligned in outer margin, strictly outside nails */}
-        <div className="flex-shrink-0 text-right pr-2.5 sm:pr-4 select-none max-w-[145px] sm:max-w-[210px]">
-          <span
-            className="block font-serif italic text-[12px] sm:text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5"
-          >
-            01
-          </span>
-          <span
-            className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]"
-            style={{
-              fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif",
-              fontSize: 'clamp(13px, 1.2vw, 18px)',
-              fontWeight: 500,
-              letterSpacing: '0.06em',
-              textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)',
-            }}
-          >
-            溫和護甲打底
-          </span>
-          <span
-            className="block font-sans text-[11px] sm:text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none"
-          >
-            貼合甲面，不傷真甲
-          </span>
+        <div className="flex-shrink-0 text-right pr-4 select-none max-w-[210px]">
+          <span className="block font-serif italic text-[14px] tracking-[0.25em] text-[#8BB0A5] uppercase mb-0.5">01</span>
+          <span className="block leading-snug drop-shadow-md select-none text-[#F4F7F6]" style={{ fontFamily: "'Noto Serif TC', 'Cormorant Garamond', serif", fontSize: 'clamp(15px, 1.2vw, 18px)', fontWeight: 500, letterSpacing: '0.06em', textShadow: '0 2px 14px rgba(0, 0, 0, 0.9)' }}>溫和護甲打底</span>
+          <span className="block font-sans text-[13px] tracking-[0.04em] text-[#B8C2BF] font-light mt-1 select-none">貼合原生甲面，不傷真甲</span>
         </div>
-
-        {/* 1px Liquid Silver horizontal leader line extending into the center of the 1st nude nail */}
-        <div
-          className="flex-1 h-[1px] min-w-[16px] sm:min-w-[32px]"
-          style={{
-            background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.15), rgba(226, 230, 229, 0.55))',
-          }}
-        />
-
-        {/* Terminal Glowing Dot (4px) resting right at the center point of the 1st nude nail */}
-        <div
-          className="flex-shrink-0 rounded-full"
-          style={{
-            width: '4px',
-            height: '4px',
-            backgroundColor: '#EEF2F1',
-            boxShadow: '0 0 8px 1px rgba(238, 242, 241, 0.9), 0 0 2px #FFFFFF',
-          }}
-        />
+        <div className="flex-1 h-[1px] min-w-[32px]" style={{ background: 'linear-gradient(90deg, rgba(226, 230, 229, 0.15), rgba(226, 230, 229, 0.55))' }} />
+        <div className="flex-shrink-0 rounded-full" style={{ width: '4px', height: '4px', backgroundColor: '#EEF2F1', boxShadow: '0 0 8px 1px rgba(238, 242, 241, 0.9), 0 0 2px #FFFFFF' }} />
+      </div>
+      {/* Mobile compact label */}
+      <div
+        className="absolute flex sm:hidden items-center pointer-events-none select-none"
+        style={{
+          top: '72%',
+          left: '4%',
+          transform: `translateY(-50%)`,
+          opacity: layer1Opacity,
+          visibility: layer1Opacity > 0.02 ? 'visible' : 'hidden',
+        }}
+      >
+        <div className="px-2.5 py-1.5 rounded-md" style={{ backgroundColor: 'rgba(7, 11, 9, 0.75)', backdropFilter: 'blur(8px)' }}>
+          <span className="block font-serif italic text-[10px] tracking-[0.2em] text-[#8BB0A5] uppercase">01</span>
+          <span className="block font-serif text-[12px] text-[#F4F7F6] font-medium leading-tight" style={{ textShadow: '0 1px 8px rgba(0,0,0,0.9)' }}>溫和護甲打底</span>
+        </div>
       </div>
 
       {/* ================================================================= */}
