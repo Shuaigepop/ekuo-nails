@@ -36,34 +36,34 @@ export default function StoryOverlays({
   const layer2Opacity = getCardOpacity(progress, 0.25, 0.32, 0.43, 0.47)
   const layer1Opacity = getCardOpacity(progress, 0.27, 0.34, 0.43, 0.47)
 
-  // Portfolio Archive Gallery (EMMA 指尖私藏): 52% - 88%
+  // Portfolio Archive Gallery (Ekuo 指尖私藏): 50% - 75%
   let portfolioOpacity = 0
   let portfolioTranslateY = 0
   let portfolioScale = 1
 
-  if (progress >= 0.52 && progress <= 0.88) {
-    if (progress < 0.57) {
-      portfolioOpacity = (progress - 0.52) / 0.05
-    } else if (progress <= 0.72) {
+  if (progress >= 0.50 && progress <= 0.75) {
+    if (progress < 0.55) {
+      portfolioOpacity = (progress - 0.50) / 0.05
+    } else if (progress <= 0.70) {
       portfolioOpacity = 1
     } else {
-      // Gentle fade out and subtle upward drift as calendar rises from below
-      const exitT = Math.min(1, (progress - 0.72) / 0.16)
+      // Gentle fade out cleanly before calendar enters, avoiding any desktop screen collision
+      const exitT = (progress - 0.70) / 0.05
       portfolioOpacity = Math.max(0, 1 - exitT)
-      portfolioTranslateY = exitT * -60
-      portfolioScale = 1 - exitT * 0.03
+      portfolioTranslateY = exitT * -40
+      portfolioScale = 1 - exitT * 0.02
     }
   }
 
-  // Finale section: Calendar & Booking — Slowly rises up from bottom (0.72 - 0.90)
+  // Finale section: Calendar & Booking — Smoothly docks from 0.73, 100% full-screen from 0.79 to 1.00
   let calendarScrollProgress = 0
-  if (progress > 0.72) {
-    calendarScrollProgress = Math.min(1, Math.max(0, (progress - 0.72) / 0.18))
+  if (progress > 0.73) {
+    calendarScrollProgress = Math.min(1, Math.max(0, (progress - 0.73) / 0.06))
   }
   // Apple-grade cubic deceleration for natural physical inertia
   const easeProgress = 1 - Math.pow(1 - calendarScrollProgress, 3)
   const calendarTranslateY = (1 - easeProgress) * 100 // 100vh down to 0vh
-  const calendarOpacity = Math.min(1, calendarScrollProgress / 0.12)
+  const calendarOpacity = Math.min(1, calendarScrollProgress / 0.4)
   const isCalendarVisible = calendarScrollProgress > 0.005
 
   return (
@@ -291,26 +291,26 @@ export default function StoryOverlays({
 
       {/* ================================================================= */}
       {/* SECTION 5: Finale — Edge-to-Edge Emerald Obsidian Schedule       */}
-      {/* Slowly rises up from bottom (慢慢往上) with luxury architectural sheet*/}
+      {/* Smoothly glides in and anchors full-screen without desktop cutoff */}
       {/* ================================================================= */}
       <div
         id="calendar-scroll-container"
-        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[75px] sm:pt-[85px] overflow-y-auto overscroll-contain bg-[#070b09] border-t border-[#E2E6E5]/20 shadow-[0_-35px_100px_rgba(0,0,0,0.95)]"
+        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[70px] sm:pt-[75px] overflow-y-auto overscroll-contain bg-[#070b09] border-t sm:border-t-0 border-[#E2E6E5]/20 shadow-[0_-35px_100px_rgba(0,0,0,0.95)] sm:shadow-none"
         style={{
           transform: `translate3d(0, ${calendarTranslateY}vh, 0)`,
           opacity: calendarOpacity,
           visibility: isCalendarVisible ? 'visible' : 'hidden',
-          pointerEvents: calendarScrollProgress > 0.5 ? 'auto' : 'none',
+          pointerEvents: calendarScrollProgress > 0.4 ? 'auto' : 'none',
           transition: 'transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease-out',
           zIndex: 30,
           overscrollBehavior: 'contain',
           WebkitOverflowScrolling: 'touch',
         }}
       >
-        {/* Subtle Architectural Sheet Grab Bar */}
-        <div className="w-12 h-1 rounded-full bg-[#E2E6E5]/25 mx-auto mb-3 flex-shrink-0" />
+        {/* Subtle Architectural Sheet Grab Bar (Mobile only) */}
+        <div className="w-12 h-1 rounded-full bg-[#E2E6E5]/25 mx-auto mb-3 flex-shrink-0 sm:hidden" />
 
-        <div className="w-full max-w-4xl flex justify-center my-auto pb-10">
+        <div className="w-full max-w-4xl flex justify-center pb-12 sm:pb-8 my-auto sm:my-0">
           <BookingCalendarCard
             onScrollTo={onScrollTo}
             isAdminMode={isAdminMode}

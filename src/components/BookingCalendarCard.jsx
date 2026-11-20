@@ -545,7 +545,7 @@ export default function BookingCalendarCard({
             {Array.from({ length: leadingEmptyDays }).map((_, i) => (
               <div
                 key={`empty-${i}`}
-                className="min-h-[118px] sm:min-h-[132px] border-b border-[rgba(197,206,203,0.08)] bg-transparent"
+                className="min-h-[88px] sm:min-h-[96px] lg:min-h-[106px] border-b border-[rgba(197,206,203,0.08)] bg-transparent"
               />
             ))}
 
@@ -562,7 +562,7 @@ export default function BookingCalendarCard({
               return (
                 <div
                   key={dayNum}
-                  className={`min-h-[124px] sm:min-h-[140px] p-2 sm:p-2.5 border-b border-[rgba(197,206,203,0.08)] flex flex-col justify-between relative transition-colors ${
+                  className={`min-h-[92px] sm:min-h-[100px] lg:min-h-[110px] p-1.5 sm:p-2 border-b border-[rgba(197,206,203,0.08)] flex flex-col justify-between relative transition-colors ${
                     isAdminMode ? 'hover:bg-white/[0.02]' : ''
                   }`}
                 >
@@ -634,8 +634,8 @@ export default function BookingCalendarCard({
                       </span>
                     </div>
                   ) : (
-                    /* Daily VIP Time Slots Listing (16px clamp, font-weight 500, 8px gap) */
-                    <div className="flex flex-col gap-2 my-auto pt-1">
+                    /* Daily VIP Time Slots Listing (16px clamp, font-weight 500, breathable gap) */
+                    <div className="flex flex-col gap-1 sm:gap-1.5 my-auto pt-0.5">
                       {dayConfig.slots.map((sObj) => {
                         const slot = sObj.time
                         const isBooked = sObj.status === 'booked'
