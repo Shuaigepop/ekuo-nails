@@ -106,6 +106,18 @@ export default function CanvasStage({
     context.fillRect(offsetX - 2, offsetY + renderHeight - featherSize, renderWidth + 4, featherSize + 4)
   }
 
+  // Draw frame helper guaranteeing instant visual presentation
+  const drawFrame = (frameIndex, targetCanvas, context) => {
+    if (!targetCanvas || !context) return
+    const safeIndex = Math.max(0, Math.min(Math.round(frameIndex), totalFrames - 1))
+    const img = (images && images[safeIndex]) || (images && images[0])
+    if (img && img.complete && img.naturalWidth > 0) {
+      const frameProg = totalFrames > 1 ? safeIndex / (totalFrames - 1) : 0
+      renderFrameOnCanvas(img, context, targetCanvas, frameProg)
+      lastDrawnFrameRef.current = safeIndex
+    }
+  }
+
   // Setup canvas size ONLY on real window resize (never on scroll!)
   useEffect(() => {
     const canvas = canvasRef.current
@@ -122,14 +134,8 @@ export default function CanvasStage({
       canvas.style.height = `${height}px`
 
       const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
-      if (ctx && images.length > 0) {
-        const safeIndex = Math.max(0, Math.min(Math.round(currentFrameRef.current), totalFrames - 1))
-        const img = images[safeIndex] || images[0]
-        if (img && img.complete) {
-          const frameProg = totalFrames > 1 ? safeIndex / (totalFrames - 1) : 0
-          renderFrameOnCanvas(img, ctx, canvas, frameProg)
-          lastDrawnFrameRef.current = safeIndex
-        }
+      if (ctx) {
+        drawFrame(currentFrameRef.current, canvas, ctx)
       }
     }
 
@@ -152,24 +158,20 @@ export default function CanvasStage({
     const renderLoop = () => {
       const prog = progressRef.current
 
+      // Always guarantee frame 0 is drawn immediately on load!
+      if (lastDrawnFrameRef.current === -1) {
+        drawFrame(0, canvas, ctx)
+      }
+
       // When canvas has dissolved into deep obsidian (progress > 0.52), sleep loop drawing to save 100% GPU
-      if (prog <= 0.52 && images.length > 0) {
+      if (prog <= 0.52) {
         const targetFrame = Math.max(0, Math.min(totalFrames - 1, (totalFrames - 1) * prog))
         const diff = targetFrame - currentFrameRef.current
 
         if (Math.abs(diff) > 0.003) {
           // Responsive butter-smooth lerp (Apple scroll style)
           currentFrameRef.current += diff * 0.22
-          const safeIndex = Math.max(0, Math.min(Math.round(currentFrameRef.current), totalFrames - 1))
-
-          if (safeIndex !== lastDrawnFrameRef.current) {
-            lastDrawnFrameRef.current = safeIndex
-            const img = images[safeIndex]
-            if (img && img.complete) {
-              const frameProg = totalFrames > 1 ? safeIndex / (totalFrames - 1) : 0
-              renderFrameOnCanvas(img, ctx, canvas, frameProg)
-            }
-          }
+          drawFrame(currentFrameRef.current, canvas, ctx)
         }
       }
 
@@ -185,20 +187,13 @@ export default function CanvasStage({
     }
   }, [images, totalFrames])
 
-  // Instant draw on first frame ready
+  // Instant draw on first frame ready or when images change
   useEffect(() => {
-    if (canvasRef.current && (isFirstFrameReady || isLoaded)) {
-      const canvas = canvasRef.current
-      const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
-      if (ctx && images.length > 0) {
-        const frame = Math.round(currentFrameRef.current)
-        const img = images[frame] || images[0]
-        if (img && img.complete) {
-          const frameProg = totalFrames > 1 ? frame / (totalFrames - 1) : 0
-          renderFrameOnCanvas(img, ctx, canvas, frameProg)
-          lastDrawnFrameRef.current = frame
-        }
-      }
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
+    if (ctx) {
+      drawFrame(currentFrameRef.current, canvas, ctx)
     }
   }, [isFirstFrameReady, isLoaded, images, totalFrames])
 
@@ -235,7 +230,7 @@ export default function CanvasStage({
         style={{
           width: '100vw',
           height: '100vh',
-          opacity: (isFirstFrameReady || isLoaded) ? canvasOpacity : 0,
+          opacity: (isFirstFrameReady || isLoaded || (images && images.length > 0)) ? canvasOpacity : 0,
           visibility: isCanvasVisible ? 'visible' : 'hidden',
         }}
       />
