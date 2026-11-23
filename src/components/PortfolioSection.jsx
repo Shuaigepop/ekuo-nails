@@ -11,7 +11,7 @@ import { resolveAsset } from '../utils/assetPath'
  * - Symmetrically balanced 2-column layout (Left: SERIES 01 / 翠微夜宴, Right: SERIES 02 / 浮雕鎏金)
  * - Refined typographic hierarchy matching high-end printed art book aesthetics
  */
-export default function PortfolioSection({
+function PortfolioSection({
   onSelectDesign,
   isAdminMode = false,
 }) {
@@ -405,3 +405,5 @@ export default function PortfolioSection({
     </div>
   )
 }
+
+export default React.memo(PortfolioSection)

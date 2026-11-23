@@ -58,20 +58,31 @@ export default function App() {
     padDigits: 3
   })
 
-  // Smooth scroll handler
-  const handleScroll = useCallback(() => {
-    const scrollY = window.scrollY
-    const maxScroll = document.documentElement.scrollHeight - window.innerHeight
-    if (maxScroll <= 0) return
+  const rafIdRef = useRef(null)
 
-    const progress = Math.min(1, Math.max(0, scrollY / maxScroll))
-    setScrollProgress(progress)
+  // Smooth rAF-throttled scroll handler (caps state updates to screen refresh rate)
+  const handleScroll = useCallback(() => {
+    if (rafIdRef.current) return
+    rafIdRef.current = requestAnimationFrame(() => {
+      const scrollY = window.scrollY
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+      if (maxScroll > 0) {
+        const progress = Math.min(1, Math.max(0, scrollY / maxScroll))
+        setScrollProgress(progress)
+      }
+      rafIdRef.current = null
+    })
   }, [])
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current)
+      }
+    }
   }, [handleScroll])
 
   // Programmatic scroll to target progress

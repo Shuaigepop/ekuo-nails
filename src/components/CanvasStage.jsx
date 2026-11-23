@@ -16,6 +16,13 @@ export default function CanvasStage({
 }) {
   const canvasRef = useRef(null)
   const currentFrameRef = useRef(0)
+  const progressRef = useRef(progress)
+  const lastDrawnFrameRef = useRef(-1)
+
+  // Keep progressRef in sync with zero effect re-instantiation
+  useEffect(() => {
+    progressRef.current = progress
+  }, [progress])
 
   // Shared pure render function for high performance & guaranteed consistency
   const renderFrameOnCanvas = (img, context, targetCanvas, frameProgress = 0) => {
@@ -99,15 +106,10 @@ export default function CanvasStage({
     context.fillRect(offsetX - 2, offsetY + renderHeight - featherSize, renderWidth + 4, featherSize + 4)
   }
 
+  // Setup canvas size ONLY on real window resize (never on scroll!)
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
-
-    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
-    if (!ctx) return
-
-    let animationFrameId
-    let currentRenderedFrame = currentFrameRef.current
 
     const handleResize = () => {
       const dpr = Math.max(window.devicePixelRatio || 1, 1)
@@ -119,30 +121,55 @@ export default function CanvasStage({
       canvas.style.width = `${width}px`
       canvas.style.height = `${height}px`
 
-      const safeIndex = Math.max(0, Math.min(Math.round(currentRenderedFrame), totalFrames - 1))
-      const img = images[safeIndex] || images[0]
-      if (img) {
-        const frameProg = totalFrames > 1 ? safeIndex / (totalFrames - 1) : 0
-        renderFrameOnCanvas(img, ctx, canvas, frameProg)
+      const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
+      if (ctx && images.length > 0) {
+        const safeIndex = Math.max(0, Math.min(Math.round(currentFrameRef.current), totalFrames - 1))
+        const img = images[safeIndex] || images[0]
+        if (img && img.complete) {
+          const frameProg = totalFrames > 1 ? safeIndex / (totalFrames - 1) : 0
+          renderFrameOnCanvas(img, ctx, canvas, frameProg)
+          lastDrawnFrameRef.current = safeIndex
+        }
       }
     }
 
     window.addEventListener('resize', handleResize)
     handleResize()
 
-    // Smooth Lerp Scrubbing Loop (Apple-style interpolation)
-    const renderLoop = () => {
-      const targetFrame = Math.max(0, Math.min(totalFrames - 1, (totalFrames - 1) * progress))
+    return () => window.removeEventListener('resize', handleResize)
+  }, [images, totalFrames])
 
-      const diff = targetFrame - currentRenderedFrame
-      if (Math.abs(diff) > 0.003) {
-        currentRenderedFrame += diff * 0.14
-        currentFrameRef.current = currentRenderedFrame
-        const safeIndex = Math.max(0, Math.min(Math.round(currentRenderedFrame), totalFrames - 1))
-        const img = images[safeIndex]
-        if (img) {
-          const frameProg = totalFrames > 1 ? safeIndex / (totalFrames - 1) : 0
-          renderFrameOnCanvas(img, ctx, canvas, frameProg)
+  // Continuous 60fps/120fps RAF Lerp Loop (stable, zero tearing, zero GC pressure)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+
+    const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
+    if (!ctx) return
+
+    let animationFrameId
+
+    const renderLoop = () => {
+      const prog = progressRef.current
+
+      // When canvas has dissolved into deep obsidian (progress > 0.52), sleep loop drawing to save 100% GPU
+      if (prog <= 0.52 && images.length > 0) {
+        const targetFrame = Math.max(0, Math.min(totalFrames - 1, (totalFrames - 1) * prog))
+        const diff = targetFrame - currentFrameRef.current
+
+        if (Math.abs(diff) > 0.003) {
+          // Responsive butter-smooth lerp (Apple scroll style)
+          currentFrameRef.current += diff * 0.22
+          const safeIndex = Math.max(0, Math.min(Math.round(currentFrameRef.current), totalFrames - 1))
+
+          if (safeIndex !== lastDrawnFrameRef.current) {
+            lastDrawnFrameRef.current = safeIndex
+            const img = images[safeIndex]
+            if (img && img.complete) {
+              const frameProg = totalFrames > 1 ? safeIndex / (totalFrames - 1) : 0
+              renderFrameOnCanvas(img, ctx, canvas, frameProg)
+            }
+          }
         }
       }
 
@@ -152,32 +179,24 @@ export default function CanvasStage({
     animationFrameId = requestAnimationFrame(renderLoop)
 
     return () => {
-      window.removeEventListener('resize', handleResize)
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId)
       }
     }
-  }, [images, totalFrames, progress])
+  }, [images, totalFrames])
 
-  // Instant redraw on first frame ready
+  // Instant draw on first frame ready
   useEffect(() => {
     if (canvasRef.current && (isFirstFrameReady || isLoaded)) {
       const canvas = canvasRef.current
       const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true })
-      if (ctx) {
-        const dpr = Math.max(window.devicePixelRatio || 1, 1)
-        const width = window.innerWidth
-        const height = window.innerHeight
-        canvas.width = Math.round(width * dpr)
-        canvas.height = Math.round(height * dpr)
-        canvas.style.width = `${width}px`
-        canvas.style.height = `${height}px`
-
+      if (ctx && images.length > 0) {
         const frame = Math.round(currentFrameRef.current)
         const img = images[frame] || images[0]
         if (img && img.complete) {
           const frameProg = totalFrames > 1 ? frame / (totalFrames - 1) : 0
           renderFrameOnCanvas(img, ctx, canvas, frameProg)
+          lastDrawnFrameRef.current = frame
         }
       }
     }

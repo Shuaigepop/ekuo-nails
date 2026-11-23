@@ -39,7 +39,7 @@ const MONTH_NAMES_EN = [
   'July', 'August', 'September', 'October', 'November', 'December'
 ]
 
-export default function BookingCalendarCard({
+function BookingCalendarCard({
   onScrollTo,
   isAdminMode = false,
   selectedDesign = '',
@@ -949,3 +949,5 @@ export default function BookingCalendarCard({
     </div>
   )
 }
+
+export default React.memo(BookingCalendarCard)
