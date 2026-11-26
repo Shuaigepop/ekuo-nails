@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import BookingCalendarCard from './BookingCalendarCard'
 import PortfolioSection from './PortfolioSection'
 
@@ -265,23 +265,26 @@ export default function StoryOverlays({
 
       {/* ================================================================= */}
       {/* SECTION 4.5: Portfolio Archive Gallery (Editorial Lookbook)        */}
-      {/* Subtly floats upward and recedes as the calendar rises from below */}
+      {/* pointer-events on children only — scroll always goes to window    */}
       {/* ================================================================= */}
       <div
         id="portfolio-scroll-container"
-        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[85px] sm:pt-[95px] overflow-y-auto overscroll-contain bg-[#070b09]"
+        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[85px] sm:pt-[95px] overflow-hidden bg-[#070b09]"
         style={{
           transform: `translate3d(0, ${portfolioTranslateY}px, 0) scale(${portfolioScale})`,
           opacity: portfolioOpacity,
           visibility: portfolioOpacity > 0.01 ? 'visible' : 'hidden',
-          pointerEvents: portfolioOpacity > 0.5 && calendarScrollProgress < 0.5 ? 'auto' : 'none',
+          pointerEvents: 'none',
           willChange: 'transform, opacity',
           zIndex: 20,
-          overscrollBehavior: 'contain',
-          WebkitOverflowScrolling: 'touch',
         }}
       >
-        <div className="w-full max-w-6xl flex justify-center my-auto pb-12">
+        <div
+          className="w-full max-w-6xl flex justify-center my-auto pb-12"
+          style={{
+            pointerEvents: portfolioOpacity > 0.5 && calendarScrollProgress < 0.5 ? 'auto' : 'none',
+          }}
+        >
           <PortfolioSection
             onSelectDesign={onSelectDesign}
             isAdminMode={isAdminMode}
@@ -291,34 +294,39 @@ export default function StoryOverlays({
 
       {/* ================================================================= */}
       {/* SECTION 5: Finale — Edge-to-Edge Emerald Obsidian Schedule       */}
-      {/* Smoothly glides in and anchors full-screen without desktop cutoff */}
+      {/* During slide-up transition: pointer-events:none → scroll goes to window */}
+      {/* Once fully docked (easeProgress≈1): allow internal scroll for calendar content */}
       {/* ================================================================= */}
-      <div
-        id="calendar-scroll-container"
-        className="absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[70px] sm:pt-[75px] overflow-y-auto overscroll-contain bg-[#070b09] border-t sm:border-t-0 border-[#E2E6E5]/20 shadow-[0_-35px_100px_rgba(0,0,0,0.95)] sm:shadow-none"
-        style={{
-          transform: `translate3d(0, ${calendarTranslateY}vh, 0)`,
-          opacity: calendarOpacity,
-          visibility: isCalendarVisible ? 'visible' : 'hidden',
-          pointerEvents: calendarScrollProgress > 0.4 ? 'auto' : 'none',
-          willChange: 'transform, opacity',
-          zIndex: 30,
-          overscrollBehavior: 'contain',
-          WebkitOverflowScrolling: 'touch',
-        }}
-      >
-        {/* Subtle Architectural Sheet Grab Bar (Mobile only) */}
-        <div className="w-12 h-1 rounded-full bg-[#E2E6E5]/25 mx-auto mb-3 flex-shrink-0 sm:hidden" />
+      {(() => {
+        const isFullyDocked = easeProgress > 0.97
+        return (
+          <div
+            id="calendar-scroll-container"
+            className={`absolute inset-0 w-full max-w-full flex flex-col items-center justify-start p-3 sm:p-6 md:p-8 pt-[70px] sm:pt-[75px] bg-[#070b09] border-t sm:border-t-0 border-[#E2E6E5]/20 shadow-[0_-35px_100px_rgba(0,0,0,0.95)] sm:shadow-none ${isFullyDocked ? 'overflow-y-auto overscroll-contain' : 'overflow-hidden'}`}
+            style={{
+              transform: `translate3d(0, ${calendarTranslateY}vh, 0)`,
+              opacity: calendarOpacity,
+              visibility: isCalendarVisible ? 'visible' : 'hidden',
+              pointerEvents: isFullyDocked ? 'auto' : 'none',
+              willChange: isFullyDocked ? 'auto' : 'transform, opacity',
+              zIndex: 30,
+              ...(isFullyDocked ? { overscrollBehavior: 'contain', WebkitOverflowScrolling: 'touch' } : {}),
+            }}
+          >
+            {/* Subtle Architectural Sheet Grab Bar (Mobile only) */}
+            <div className="w-12 h-1 rounded-full bg-[#E2E6E5]/25 mx-auto mb-3 flex-shrink-0 sm:hidden" />
 
-        <div className="w-full max-w-4xl flex justify-center pb-12 sm:pb-8 my-auto sm:my-0">
-          <BookingCalendarCard
-            onScrollTo={onScrollTo}
-            isAdminMode={isAdminMode}
-            selectedDesign={selectedDesign}
-            onClearDesign={onClearDesign}
-          />
-        </div>
-      </div>
+            <div className="w-full max-w-4xl flex justify-center pb-12 sm:pb-8 my-auto sm:my-0">
+              <BookingCalendarCard
+                onScrollTo={onScrollTo}
+                isAdminMode={isAdminMode}
+                selectedDesign={selectedDesign}
+                onClearDesign={onClearDesign}
+              />
+            </div>
+          </div>
+        )
+      })()}
 
     </div>
   )
